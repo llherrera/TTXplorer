@@ -3,8 +3,22 @@ import 'package:get/get.dart';
 
 import 'home_page.dart';
 
-class TTXplorerPage extends StatelessWidget {
+class TTXplorerPage extends StatefulWidget {
   const TTXplorerPage({super.key});
+
+  @override
+  State<TTXplorerPage> createState() => _TTXplorerPageState();
+}
+
+class _TTXplorerPageState extends State<TTXplorerPage> {
+  @override
+  void initState() {
+    // ignore: todo
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Get.off(const HomePage());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +34,8 @@ class TTXplorerPage extends StatelessWidget {
                   fit: BoxFit.fill,
                 ),
               ),
-            ),
+            )
           )
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {Get.to(const HomePage());},
-          backgroundColor: Colors.blue,
-          child: const Icon(Icons.add),
         ),
       )
     );

@@ -67,7 +67,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
+
+  String _search = '';
+
+  void setSearch(String search) {
+    setState(() {
+      _search = search;
+    });
+  }
+
   Position _currentPosition = Position(longitude: -74.78132, latitude: 10.96854, timestamp: DateTime.now(), accuracy: 0, altitude: 0, heading: 0, speed: 0, speedAccuracy: 0);
   late GoogleMapController _mapController;
 
@@ -102,29 +110,66 @@ class _HomeState extends State<Home> {
     return await Geolocator.getCurrentPosition();
   }
 
+  Widget _buildMap() {
+    return GoogleMap(
+      onMapCreated: (GoogleMapController controller) {
+        _mapController = controller;
+        _getCurrentLocation();
+      },
+      initialCameraPosition: CameraPosition(
+        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        zoom: 14,
+      ),
+      zoomControlsEnabled: false,
+      mapType: MapType.normal,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return 
+    Stack(
       children: <Widget>[
-        Flexible(
-          flex: 2,
-          child: GoogleMap(
-            onMapCreated: (GoogleMapController controller) {
-              _mapController = controller;
-              _getCurrentLocation();
-            },
-            initialCameraPosition: CameraPosition(
-              target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-              zoom: 14,
+        Column(
+          children: <Widget>[
+            Flexible(
+              flex: 2,
+              child: _buildMap(),
             ),
-            zoomControlsEnabled: false,
-            mapType: MapType.normal,
-          ),
+            const Flexible(
+              flex: 1,
+              child: Filter()
+            )
+          ],
         ),
-        const Flexible(
-          flex: 1,
-          child: Filter()
-        )
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+            children: <Widget>[
+              IconButton(onPressed: (){}, icon: const Icon(Icons.settings_outlined, size: 40,)),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey,
+                    hintText: 'Search',
+                    hintStyle: TextStyle(fontSize: 20),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (value) => setSearch(value),
+                )
+              ),
+              IconButton(onPressed: (){}, icon: const Icon(Icons.search, size: 40,)),
+            ],
+          ))
+        ),
       ],
     );
   }
