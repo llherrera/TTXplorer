@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
    <application
         android:label="ttxplorer"
         android:name="${applicationName}"
@@ -11,7 +12,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDytj5l8LUaEZxcvCdV9LK3WDhIB3GiZ08" />
+            android:value="AIzaSyDytj5l8LUaEZxcvCdV9LK3WDhIB3GiZO8" />
 
 
         <activity
