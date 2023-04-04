@@ -13,10 +13,10 @@ class TTXplorerPage extends StatefulWidget {
 class _TTXplorerPageState extends State<TTXplorerPage> {
   @override
   void initState() {
-    // TODO: implement initState
+    // ignore: todo
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      Get.to(const HomePage());
+      Get.off(const HomePage());
     });
   }
 
