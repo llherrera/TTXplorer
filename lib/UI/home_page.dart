@@ -1,8 +1,14 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'dart:io';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import '../Data/local_model.dart';
 import '../widgets/filter_widget.dart';
 import './feed_page.dart';
 import './profile_page.dart';
@@ -15,6 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+  final PageController _pageController = PageController();
   int _selectedIndex = 1;
   static const List<Widget> _widgetOptions = <Widget>[
     FeedPage(),
@@ -22,37 +29,46 @@ class _HomePage extends State<HomePage> {
     Profile(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: _widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          iconSize: 40,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search, color: Color(0xFF2F7694)),
-              label: '',
+        body: SizedBox.expand(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            children: _widgetOptions,
+          )
+        ),
+        bottomNavigationBar:
+        BottomNavyBar(
+          selectedIndex: _selectedIndex,
+          showElevation: true, // use this to remove appBar's elevation
+          onItemSelected: (index) {
+            setState(() => _selectedIndex = index);
+            _pageController.jumpToPage(index);
+          },
+          items: [
+            BottomNavyBarItem(
+              icon: const Icon(Icons.search),
+              title: const Text(''),
+              activeColor: Colors.red,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Color(0xFF2F7694)),
-              label: '',
+            BottomNavyBarItem(
+              icon: const Icon(Icons.home),
+              title: const Text(''),
+              activeColor: Colors.purpleAccent,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle, color: Color(0xFF2F7694)),
-              label: '',
+            BottomNavyBarItem(
+              icon: const Icon(Icons.person),
+              title: const Text(''),
+              activeColor: Colors.pink,
             ),
           ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.black,
-          onTap: _onItemTapped,
         ),
       ),
     );
@@ -66,7 +82,28 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+const LocationSettings locationSettings = LocationSettings(
+  accuracy: LocationAccuracy.high,
+  distanceFilter: 5,
+);
+
 class _HomeState extends State<Home> {
+  Set<Marker> markerLocales = {};
+  late String mapStyle;
+
+  Iterable<Local> locales = [// Cuando este la db este iterable estará vacio, y se llamará la función getLocales en el init para traer la información
+    Local('buenavista','ta bueno', File(''), 'semilla', const LatLng(11.01488064038962, -74.82745006489434)),
+    Local('caiman del rio','ta bueno', File(''), 'fruta', const LatLng(11.023429370880141, -74.79637497469237)),
+    Local('plaza de la paz','ta bueno', File(''), 'insecto', const LatLng(10.988428922594359, -74.7892494693815)),
+  ];
+  Iterable<Local> voidLocales = [];//aqui estarán los locales filtrados, es para no perder información
+
+  @override
+  void initState() {
+    super.initState();
+    getLocales();
+    setLocales(voidLocales);
+  }
 
   String _search = '';
 
@@ -76,8 +113,39 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void getLocales() {
+    voidLocales = locales;
+  }
+
+  void setLocales(Iterable<Local> voidLocales) async {// de los locales extrae la información para colocarlos en el mapa
+    markerLocales = {};
+    for (var local in voidLocales) {
+      markerLocales.add(
+        Marker(
+          markerId: MarkerId(local.i.toString()),
+          position: local.ubi,
+          infoWindow: InfoWindow(
+            title: local.localName,
+            snippet: local.localDescription,
+          ),
+          onTap: () {
+            print('tapped');
+          },
+          //icon: BitmapDescriptor.defaultMarker
+          icon: local.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/fruit_icon.png') : 
+               (local.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/seed_icon.png') : 
+               await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/bug_icon.png'))
+        ),
+      );
+    }
+    setState(() {
+      markerLocales = markerLocales;
+    });
+  }
+
   Position _currentPosition = Position(longitude: -74.78132, latitude: 10.96854, timestamp: DateTime.now(), accuracy: 0, altitude: 0, heading: 0, speed: 0, speedAccuracy: 0);
   late GoogleMapController _mapController;
+  StreamSubscription<Position>? positionStream;
 
   void _getCurrentLocation() async {
     final position = await _determinatePosition();
@@ -110,18 +178,43 @@ class _HomeState extends State<Home> {
     return await Geolocator.getCurrentPosition();
   }
 
+  Future<String> getJsonFile(String path) async {
+    ByteData byte = await rootBundle.load(path);
+    var list = byte.buffer.asUint8List(byte.offsetInBytes,byte.lengthInBytes);
+    return utf8.decode(list);
+  }
+
   Widget _buildMap() {
+    positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+        (Position? position) {
+          if (position != null){
+            _mapController.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: LatLng(position.latitude, position.longitude),
+                zoom: 12.0,
+              ),
+            ));
+          }
+      });
     return GoogleMap(
-      onMapCreated: (GoogleMapController controller) {
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+        Factory<OneSequenceGestureRecognizer>(
+          () => EagerGestureRecognizer(),
+        ),
+      },
+      onMapCreated: (GoogleMapController controller) async {
         _mapController = controller;
+        mapStyle = await getJsonFile('assets/map_style.json');
+        _mapController.setMapStyle(mapStyle);
         _getCurrentLocation();
       },
       initialCameraPosition: CameraPosition(
         target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-        zoom: 14,
+        zoom: 12,
       ),
       zoomControlsEnabled: false,
       mapType: MapType.normal,
+      markers: markerLocales,
     );
   }
 
@@ -136,9 +229,9 @@ class _HomeState extends State<Home> {
               flex: 2,
               child: _buildMap(),
             ),
-            const Flexible(
+            Flexible(
               flex: 1,
-              child: Filter()
+              child: Filter(locales: voidLocales, callback: setLocales,)
             )
           ],
         ),
