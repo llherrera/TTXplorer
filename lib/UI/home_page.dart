@@ -6,23 +6,39 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import '../Data/local_model.dart';
 import '../widgets/filter_widget.dart';
 import './feed_page.dart';
 import './profile_page.dart';
+import 'local_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePage();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePage extends State<HomePage> {
-  final PageController _pageController = PageController();
+class _HomePageState extends State<HomePage> {
+  late PageController _pageController;
   int _selectedIndex = 1;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pageController = PageController(initialPage: 1);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   static const List<Widget> _widgetOptions = <Widget>[
     FeedPage(),
     Home(),
@@ -33,42 +49,39 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SizedBox.expand(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            children: _widgetOptions,
-          )
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          children: _widgetOptions,
         ),
-        bottomNavigationBar:
-        BottomNavyBar(
+        bottomNavigationBar: BottomNavyBar(
+          items: <BottomNavyBarItem> [
+            BottomNavyBarItem(
+              icon: const Icon(Icons.search),
+              title: const Text('Feed'),
+              activeColor: Colors.red,
+            ),
+            BottomNavyBarItem(
+              icon: const Icon(Icons.home),
+              title: const Text('Home'),
+              activeColor: Colors.purpleAccent,
+            ),
+            BottomNavyBarItem(
+              icon: const Icon(Icons.person),
+              title: const Text('Profile'),
+              activeColor: Colors.pink,
+            ),
+          ],
           selectedIndex: _selectedIndex,
           showElevation: true, // use this to remove appBar's elevation
           onItemSelected: (index) {
             setState(() => _selectedIndex = index);
             _pageController.jumpToPage(index);
           },
-          items: [
-            BottomNavyBarItem(
-              icon: const Icon(Icons.search),
-              title: const Text(''),
-              activeColor: Colors.red,
-            ),
-            BottomNavyBarItem(
-              icon: const Icon(Icons.home),
-              title: const Text(''),
-              activeColor: Colors.purpleAccent,
-            ),
-            BottomNavyBarItem(
-              icon: const Icon(Icons.person),
-              title: const Text(''),
-              activeColor: Colors.pink,
-            ),
-          ],
         ),
       ),
     );
@@ -90,9 +103,9 @@ const LocationSettings locationSettings = LocationSettings(
 class _HomeState extends State<Home> {
   Set<Marker> markerLocales = {};
   late String mapStyle;
-
+  
   Iterable<Local> locales = [// Cuando este la db este iterable estará vacio, y se llamará la función getLocales en el init para traer la información
-    Local('buenavista','ta bueno', File(''), 'semilla', const LatLng(11.01488064038962, -74.82745006489434)),
+    Local('buenavista','ta bueno', File('') , 'semilla', const LatLng(11.01488064038962, -74.82745006489434)),
     Local('caiman del rio','ta bueno', File(''), 'fruta', const LatLng(11.023429370880141, -74.79637497469237)),
     Local('plaza de la paz','ta bueno', File(''), 'insecto', const LatLng(10.988428922594359, -74.7892494693815)),
   ];
@@ -119,21 +132,20 @@ class _HomeState extends State<Home> {
 
   void setLocales(Iterable<Local> voidLocales) async {// de los locales extrae la información para colocarlos en el mapa
     markerLocales = {};
-    for (var local in voidLocales) {
+    for (var locall in voidLocales) {
       markerLocales.add(
         Marker(
-          markerId: MarkerId(local.i.toString()),
-          position: local.ubi,
+          markerId: MarkerId(locall.i.toString()),
+          position: locall.ubi,
           infoWindow: InfoWindow(
-            title: local.localName,
-            snippet: local.localDescription,
+            title: locall.localName,
+            snippet: locall.localDescription,
           ),
           onTap: () {
-            print('tapped');
+            Get.to(LocalPage(local: locall));
           },
-          //icon: BitmapDescriptor.defaultMarker
-          icon: local.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/fruit_icon.png') : 
-               (local.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/seed_icon.png') : 
+          icon: locall.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/fruit_icon.png') : 
+               (locall.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/seed_icon.png') : 
                await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/bug_icon.png'))
         ),
       );
@@ -187,7 +199,7 @@ class _HomeState extends State<Home> {
   Widget _buildMap() {
     positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
         (Position? position) {
-          if (position != null){
+          if (position != null) {
             _mapController.animateCamera(CameraUpdate.newCameraPosition(
               CameraPosition(
                 target: LatLng(position.latitude, position.longitude),
@@ -195,7 +207,7 @@ class _HomeState extends State<Home> {
               ),
             ));
           }
-      });
+    });
     return GoogleMap(
       gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
         Factory<OneSequenceGestureRecognizer>(

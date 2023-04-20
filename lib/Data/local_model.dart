@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Local {
@@ -7,7 +6,7 @@ class Local {
   int i = genId++;
   String localName;
   String localDescription;
-  late File localImage;
+  File localImage;
   String type;
   LatLng ubi;
 

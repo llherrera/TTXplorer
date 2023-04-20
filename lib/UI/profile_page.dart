@@ -17,7 +17,7 @@ class _ProfileState extends State<Profile> {
 
   String _username='username';
 
-  late File _image;
+  File? _image;
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -31,7 +31,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<List<String>> _searchImages(String term) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     return List.generate(20, (index) => 'https://source.unsplash.com/random/800x800/?$term');
   }
 
@@ -101,7 +101,9 @@ class _ProfileState extends State<Profile> {
             color: Colors.grey,
           ),
           child: IconButton(
-            icon: const Icon(Icons.photo_camera, size: 70),
+            icon: _image == null ? 
+                            const Icon(Icons.photo_camera, size: 70) :
+                            ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
             onPressed: () async {
               final pickedFile = await ImagePicker()
                   .pickImage(source: ImageSource.gallery);
