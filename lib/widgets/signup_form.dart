@@ -59,6 +59,12 @@ class SignupForm extends StatelessWidget {
                       style: TextStyle(fontSize: 20, fontFamily: 'RobotoSlab')),
                 ),
               ),
+              const SizedBox(height: 16),
+              const Text('Al crear una cuenta, aceptas las Condiciones de Uso y el Aviso de Privacidad de TTExplorer inc.'),
+              const SizedBox(height: 16),
+              const Text('Ya tienes una cuenta?'),
+              const Text('Inicia Sesión', style: TextStyle(color: Colors.blue)),
+
             ],
           ),
         ),

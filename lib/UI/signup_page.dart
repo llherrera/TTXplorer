@@ -39,12 +39,12 @@ class SignupPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     SignupForm(),
-                    SizedBox(height: 100),
+                    SizedBox(height: 160),
                   ],
                 ),
               ),
               Positioned(
-                bottom: 5,
+                bottom: 0,
                 right: 180,
                 child: Lottie.asset(
                   'assets/images/monkeywalk.json',
