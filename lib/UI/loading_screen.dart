@@ -11,34 +11,37 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
-    // ignore: todo
+// ignore: todo
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      //Get.off(const HomePage());
+//Get.off(const HomePage());
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          Colors.green[900], // set the background color to dark green
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Padding(padding: EdgeInsets.only(left: 20)),
-            const Text(
-              'TitiExplorer',
-              style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orangeAccent),
-            ),
             const SizedBox(height: 10.0),
             Lottie.asset(
               'assets/images/dancemonkey.json',
               width: 350,
               height: 350,
               fit: BoxFit.cover,
+            ),
+            const Padding(padding: EdgeInsets.only(left: 20, top: 10)),
+            const Text(
+              'TTXplorer',
+              style: TextStyle(
+                  fontSize: 50,
+                  //fontWeight: FontWeight.bold,
+                  fontFamily: 'RobotoSlab',
+                  color: Colors.orangeAccent),
             ),
             const SizedBox(height: 30),
             const CircularProgressIndicator(),
