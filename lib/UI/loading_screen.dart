@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'home_page.dart';
+import 'package:linkedin_login/linkedin_login.dart';
+import 'authselect_page.dart';
+import 'login_page.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -14,7 +16,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 // ignore: todo
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-//Get.off(const HomePage());
+      Get.off(const AuthSelectPage());
     });
   }
 
@@ -39,7 +41,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
               'TTXplorer',
               style: TextStyle(
                   fontSize: 50,
-                  //fontWeight: FontWeight.bold,
                   fontFamily: 'RobotoSlab',
                   color: Colors.orangeAccent),
             ),
