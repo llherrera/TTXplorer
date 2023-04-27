@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../UI/home_page.dart';
@@ -17,34 +18,50 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.center,
       child: Container(
-        padding:
-            const EdgeInsets.only(top: 20, left: 32, right: 32, bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        constraints: const BoxConstraints(maxWidth: 370),
+        padding: const EdgeInsets.only(top: 0, left: 32, right: 32, bottom: 0),
+        constraints: const BoxConstraints(maxWidth: 300),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color(0xFFF7A935),
+                  labelText: '  USERNAME',
+                  labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 7), // Adjust vertical padding
+                  border: OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.circular(15), // Adjust the corner radius
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color(0xFFF7A935),
+                  labelText: '  PASSWORD',
+                  labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 7), // Adjust vertical padding
+                  border: OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.circular(15), // Adjust the corner radius
+                  ),
+                ),
+              ),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -52,9 +69,46 @@ class _LoginFormState extends State<LoginForm> {
                     // TODO: Handle forgot password
                   },
                   child: const Text('Forgot password?',
-                      style: TextStyle(color: Colors.black45)),
+                      style: TextStyle(color: Colors.black, fontSize: 12)),
                 ),
               ),
+              const SizedBox(height: 5),
+              Row(
+                // Add a row with the two icons
+                mainAxisAlignment: MainAxisAlignment.center, // Center the icons
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.blue,
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        FontAwesomeIcons.facebookF,
+                        size: 30,
+                        color: Colors.white,
+                      ), // Facebook icon
+                    ),
+                  ),
+                  const SizedBox(width: 25),
+                  Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        FontAwesomeIcons.instagram,
+                        size: 30,
+                        color: Colors.pink,
+                      ), // Instagram icon
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Checkbox(
@@ -66,31 +120,39 @@ class _LoginFormState extends State<LoginForm> {
                       // TODO: Handle keep me logged in
                     },
                   ),
-                  const Text('Keep me logged in'),
+                  const Text(
+                    'Keep me logged in',
+                    style: TextStyle(fontSize: 13, color: Colors.black),
+                  ),
                 ],
               ),
-              const SizedBox(height: 16),
               SizedBox(
-                width: 180,
+                width: 200,
                 child: ElevatedButton(
                   onPressed: () {
                     Get.off(const HomePage()); // TODO: Handle sign in
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black45, // Set the button color
-                  ),
-                  child: const Text('Sign in', style: TextStyle(fontSize: 18)),
+                      backgroundColor:
+                          const Color(0xFF713D8F) // Set the button color
+                      ),
+                  child: const Text('SIGN IN', style: TextStyle(fontSize: 15)),
                 ),
               ),
-              const SizedBox(height: 16),
               const Text('Or'),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   Get.off(const SignupPage());
                 },
-                child: const Text('Join now',
-                    style: TextStyle(fontSize: 15, color: Colors.black)),
+                child: const Padding(
+                  padding: EdgeInsets.all(
+                      20), // Adjust the padding to increase the reaction area
+                  child: Text('JOIN NOW',
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold)),
+                ),
               ),
             ],
           ),

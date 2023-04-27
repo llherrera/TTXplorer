@@ -18,7 +18,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 // ignore: todo
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      Get.off(const AuthSelectPage());
+      Get.off(const LoginPage());
     });
   }
 
@@ -26,7 +26,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          Colors.green[900], // set the background color to dark green
+          const Color(0xFF38005F), // set the background color to dark green
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,17 +34,32 @@ class _LoadingScreenState extends State<LoadingScreen> {
             const SizedBox(height: 10.0),
             Lottie.asset(
               'assets/images/dancemonkey.json',
-              width: 350,
-              height: 350,
+              width: 280,
+              height: 280,
               fit: BoxFit.cover,
             ),
             const Padding(padding: EdgeInsets.only(left: 20, top: 10)),
-            const Text(
-              'TTXplorer',
-              style: TextStyle(
-                  fontSize: 50,
-                  fontFamily: 'RobotoSlab',
-                  color: Colors.orangeAccent),
+            RichText(
+              text: const TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'TITI',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'RobotoSlab',
+                      color: Colors.white,
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'XPLORER',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'RobotoSlab',
+                      color: Color(0xFFF07B2B),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 30),
             const CircularProgressIndicator(),
