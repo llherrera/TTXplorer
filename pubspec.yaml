@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  lottie: ^1.2.1
   google_maps_flutter: ^2.2.0
   get: ^4.3.8
   cupertino_icons: ^1.0.2
@@ -19,6 +20,11 @@ dependencies:
   image_picker: ^0.8.7
   bottom_navy_bar: ^6.0.0
 
+  linkedin_login: ^2.2.1
+  font_awesome_flutter: ^10.4.0
+  
+  
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,3 +38,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
+  fonts:
+  - family: RobotoSlab
+    fonts:
+      - asset: assets/fonts/static/RobotoSlab-Bold.ttf
