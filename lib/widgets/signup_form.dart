@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../UI/avatarchoice_page.dart';
 import '../UI/login_page.dart';
 import '../UI/signup_page.dart';
 import '../UI/home_page.dart';
@@ -50,7 +51,7 @@ class SignupForm extends StatelessWidget {
                 width: 180,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.off(const LoginPage()); // TODO: Handle sign in
+                    Get.off(const AvatarChoicePage()); // TODO: Handle sign in
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black45, // Set the button color
@@ -60,11 +61,11 @@ class SignupForm extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text('Al crear una cuenta, aceptas las Condiciones de Uso y el Aviso de Privacidad de TTExplorer inc.'),
+              const Text(
+                  'Al crear una cuenta, aceptas las Condiciones de Uso y el Aviso de Privacidad de TTExplorer inc.'),
               const SizedBox(height: 16),
               const Text('Ya tienes una cuenta?'),
               const Text('Inicia Sesión', style: TextStyle(color: Colors.blue)),
-
             ],
           ),
         ),

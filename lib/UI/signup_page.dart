@@ -28,6 +28,7 @@ class SignupPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
+                    SizedBox(height: 50),
                     Text(
                       'Create Account',
                       textAlign: TextAlign.center,
@@ -39,11 +40,11 @@ class SignupPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     SignupForm(),
-                    SizedBox(height: 160),
+                    SizedBox(height: 100),
                   ],
                 ),
               ),
-              Positioned(
+              /*Positioned(
                 bottom: 0,
                 right: 180,
                 child: Lottie.asset(
@@ -52,7 +53,7 @@ class SignupPage extends StatelessWidget {
                   height: 200,
                   fit: BoxFit.cover,
                 ),
-              ),
+              ), */
             ],
           ),
         ),
