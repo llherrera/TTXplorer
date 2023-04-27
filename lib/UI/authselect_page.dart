@@ -12,19 +12,19 @@ class AuthSelectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        decoration: const BoxDecoration(
+        /*decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color.fromARGB(255, 2, 76, 28),
+              Color(0xF07B2B),
               Color.fromARGB(255, 41, 152, 86),
             ],
           ),
-        ),
+        ),*/
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Color(0xF07B2B),
           body: Stack(
             children: [
               Align(

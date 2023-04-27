@@ -59,21 +59,22 @@ class _HomePageState extends State<HomePage> {
           children: _widgetOptions,
         ),
         bottomNavigationBar: BottomNavyBar(
+          backgroundColor: const Color(0xFF713D8F),
           items: <BottomNavyBarItem> [
             BottomNavyBarItem(
               icon: const Icon(Icons.search),
               title: const Text('Feed'),
-              activeColor: Colors.red,
+              activeColor: const Color(0xFFF07B2B),
             ),
             BottomNavyBarItem(
               icon: const Icon(Icons.home),
               title: const Text('Home'),
-              activeColor: Colors.purpleAccent,
+              activeColor: const Color(0xFFF07B2B),
             ),
             BottomNavyBarItem(
               icon: const Icon(Icons.person),
               title: const Text('Profile'),
-              activeColor: Colors.pink,
+              activeColor: const Color(0xFFF07B2B),
             ),
           ],
           selectedIndex: _selectedIndex,
@@ -144,9 +145,9 @@ class _HomeState extends State<Home> {
           onTap: () {
             Get.to(LocalPage(local: locall));
           },
-          icon: locall.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/fruit_icon.png') : 
-               (locall.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/seed_icon.png') : 
-               await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/bug_icon.png'))
+          icon: locall.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/cereza_icon.png') : 
+               (locall.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/semillas_icon.png') : 
+               await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/arana_icon.png'))
         ),
       );
     }
@@ -238,42 +239,14 @@ class _HomeState extends State<Home> {
         Column(
           children: <Widget>[
             Flexible(
-              flex: 2,
+              flex: 4,
               child: _buildMap(),
             ),
             Flexible(
-              flex: 1,
+              flex: 3,
               child: Filter(locales: voidLocales, callback: setLocales,)
             )
           ],
-        ),
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-            children: <Widget>[
-              IconButton(onPressed: (){}, icon: const Icon(Icons.settings_outlined, size: 40,)),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 20),
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey,
-                    hintText: 'Search',
-                    hintStyle: TextStyle(fontSize: 20),
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (value) => setSearch(value),
-                )
-              ),
-              IconButton(onPressed: (){}, icon: const Icon(Icons.search, size: 40,)),
-            ],
-          ))
         ),
       ],
     );

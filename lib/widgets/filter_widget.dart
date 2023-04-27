@@ -16,6 +16,9 @@ class _FilterState extends State<Filter> {
   bool isPressedA = false;
   bool isPressedB = false;
   bool isPressedC = false;
+  double distanceValues = 0;
+  double priceValues = 0;
+
   void filterBy(String filter) {
     if (filter != 'void') {
       widget.locales = widget.locales.where((Local local) => local.type == filter);
@@ -24,95 +27,145 @@ class _FilterState extends State<Filter> {
       widget.callback(widget.locales);
     }
   }
+  String _search = '';
 
-  RangeValues distanceValues = const RangeValues(1, 5);
-  RangeValues priceValues = const RangeValues(50000, 5000000);
+  void setSearch(String search) {
+    setState(() {
+      _search = search;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          RangeSlider(
-            values: distanceValues,
-            min: distanceValues.start,
-            max: distanceValues.end,
-            onChanged: (RangeValues values){
-              setState(() {
-                distanceValues = values;
-              });
-            }
-          ),
-          RangeSlider(
-            values: priceValues,
-            min: priceValues.start,
-            max: priceValues.end,
-            onChanged: (RangeValues values){
-              setState(() {
-                priceValues = values;
-              });
-            }
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(onPressed: (){
-                if (isPressedB || isPressedC) {
-                  filterBy('fruta');
-                  isPressedA = true;
-                  isPressedB = false;
-                  isPressedC = false;
-                }else if (!isPressedA) {
-                  filterBy('fruta');
-                  isPressedA = true;
-                  isPressedB = false;
-                  isPressedC = false;
-                }else {
-                  filterBy('void');
-                  isPressedA = false;
-                }
-                }, icon: Image.asset('assets/icons/fruit_icon.png', color: isPressedA ? Colors.red : Colors.black),
-              ),
-              
-              IconButton(onPressed: (){
-                if (isPressedA || isPressedC) {
-                  filterBy('semilla');
-                  isPressedB = true;
-                  isPressedA = false;
-                  isPressedC = false;
-                }else if (!isPressedB) {
-                  filterBy('semilla');
-                  isPressedB = true;
-                  isPressedA = false;
-                  isPressedC = false;
-                }else {
-                  filterBy('void');
-                  isPressedB = false;
-                }
-                }, icon: Image.asset('assets/icons/seed_icon.png', color: isPressedB ? Colors.red : Colors.black),
-              ),
-              IconButton(onPressed: (){
-                if (isPressedB || isPressedA) {
-                  filterBy('insecto');
-                  isPressedC = true;
-                  isPressedB = false;
-                  isPressedA = false;
-                }else if (!isPressedC) {
-                  filterBy('insecto');
-                  isPressedC = true;
-                  isPressedB = false;
-                  isPressedA = false;
-                }else {
-                  filterBy('void');
-                  isPressedC = false;
-                }
-                }, icon: Image.asset('assets/icons/bug_icon.png', color: isPressedC ? Colors.red : Colors.black),
-              ),
-            ],
-          )
-        ],
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFFB27CD1)
       ),
-      );
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                IconButton(onPressed: (){}, icon: const Icon(Icons.settings_outlined, size: 40,)),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFFF07B2B),
+                      hintText: 'Search',
+                      hintStyle: const TextStyle(fontSize: 20),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none
+                      )
+                    ),
+                    onChanged: (value) => setSearch(value),
+                  )
+                ),
+                IconButton(onPressed: (){}, icon: const Icon(Icons.search, size: 40,)),
+              ],
+            ),
+            Slider(
+              value: priceValues,
+              max: 100,
+              label: priceValues.round().toString(),
+              onChanged: (newvalue) {
+                setState(() {
+                  priceValues = newvalue;
+                });
+              }
+            ),
+            Slider(
+              value: distanceValues,
+              max: 100,
+              label: distanceValues.round().toString(),
+              onChanged: (newvalue) {
+                setState(() {
+                  distanceValues = newvalue;
+                });
+              }
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Ink(
+                  decoration: const ShapeDecoration(
+                    color: Color(0xFF713D8D),
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(onPressed: (){
+                    if (isPressedB || isPressedC) {
+                      filterBy('fruta');
+                      isPressedA = true;
+                      isPressedB = false;
+                      isPressedC = false;
+                    }else if (!isPressedA) {
+                      filterBy('fruta');
+                      isPressedA = true;
+                      isPressedB = false;
+                      isPressedC = false;
+                    }else {
+                      filterBy('void');
+                      isPressedA = false;
+                    }
+                    }, icon: Image.asset('assets/icons/cereza_icon.png', color: isPressedA ? Colors.red : Colors.black),
+                  ),
+                ),
+                Ink(
+                  decoration: const ShapeDecoration(
+                    color: Color(0xFF713D8D),
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(onPressed: (){
+                    if (isPressedA || isPressedC) {
+                      filterBy('semilla');
+                      isPressedB = true;
+                      isPressedA = false;
+                      isPressedC = false;
+                    }else if (!isPressedB) {
+                      filterBy('semilla');
+                      isPressedB = true;
+                      isPressedA = false;
+                      isPressedC = false;
+                    }else {
+                      filterBy('void');
+                      isPressedB = false;
+                    }
+                    }, icon: Image.asset('assets/icons/semillas_icon.png', color: isPressedB ? Colors.red : Colors.black),
+                  )
+                ),
+                Ink(
+                  decoration: const ShapeDecoration(
+                    color: Color(0xFF713D8D),
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(onPressed: (){
+                    if (isPressedB || isPressedA) {
+                      filterBy('insecto');
+                      isPressedC = true;
+                      isPressedB = false;
+                      isPressedA = false;
+                    }else if (!isPressedC) {
+                      filterBy('insecto');
+                      isPressedC = true;
+                      isPressedB = false;
+                      isPressedA = false;
+                    }else {
+                      filterBy('void');
+                      isPressedC = false;
+                    }
+                    }, icon: Image.asset('assets/icons/arana_icon.png', color: isPressedC ? Colors.red : Colors.black),
+                  )
+                ),
+              ],
+            )
+          ],
+        ),
+      )
+    );
   }
 }
