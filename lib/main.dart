@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'UI/avatarchoice_page.dart';
 import 'UI/loading_screen.dart';
+import 'UI/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TTXplorer',
-      home: LoadingScreen(),
+      initialRoute: '/loading',
+      routes: {
+        '/loading': (context) => const LoadingScreen(),
+        '/': (context) => const AvatarChoicePage(),
+        '/login': (context) => const LoginPage(),
+      },
     );
   }
 }

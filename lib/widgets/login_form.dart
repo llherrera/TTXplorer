@@ -66,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
                       // TODO: Handle keep me logged in
                     },
                   ),
-                  Text('Keep me logged in'),
+                  const Text('Keep me logged in'),
                 ],
               ),
               const SizedBox(height: 16),

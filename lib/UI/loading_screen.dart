@@ -6,6 +6,8 @@ import 'authselect_page.dart';
 import 'login_page.dart';
 
 class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
+
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
