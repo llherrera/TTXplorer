@@ -49,11 +49,11 @@ class LoginPage extends StatelessWidget {
               child: LoginForm(),
             ),
             Positioned(
-              top: 370,
+              top: 425,
               left: 10,
               right: 0,
               child: Transform.scale(
-                scale: 0.6, // Increase the size by 20%
+                scale: 0.45, // Increase the size by 20%
                 child: Image.asset('assets/images/monoNaranja.png'),
               ),
             ),

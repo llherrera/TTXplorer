@@ -8,43 +8,32 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromARGB(255, 2, 76, 28),
-              Color.fromARGB(255, 41, 152, 86),
-            ],
-          ),
-        ),
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
-          body: Stack(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SizedBox(height: 50),
-                    Text(
-                      'Create Account',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontFamily: 'RobotoSlab',
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    SignupForm(),
-                    SizedBox(height: 100),
-                  ],
-                ),
+      child: Scaffold(
+        backgroundColor: const Color(0xFF713D8F),
+        resizeToAvoidBottomInset: true,
+        body: Stack(
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  SizedBox(height: 50),
+                  Text(
+                    'Create Account',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                        fontFamily: 'RobotoSlab',
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  SignupForm(),
+                  SizedBox(height: 100),
+                ],
               ),
-              /*Positioned(
+            ),
+            /*Positioned(
                 bottom: 0,
                 right: 180,
                 child: Lottie.asset(
@@ -54,8 +43,7 @@ class SignupPage extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ), */
-            ],
-          ),
+          ],
         ),
       ),
     );
