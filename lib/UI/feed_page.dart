@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ttxplorer/UI/place_description.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -19,7 +21,7 @@ class FeedPage extends StatelessWidget {
             children: <Widget>[
               Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  color: Colors.blueGrey,
+                  color: Color(0xFF38005F),
                   child: Row(
                     children: <Widget>[
                       const Spacer(flex: 1),
@@ -29,13 +31,14 @@ class FeedPage extends StatelessWidget {
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.grey,
+                              fillColor: Color(0xFFB27CD1),
                               hintText: 'Search',
                               border: InputBorder.none,
                             ),
                           )),
                       IconButton(
                         icon: const Icon(Icons.search),
+                        color: const Color(0xFFF07B2B),
                         onPressed: () {},
                       ),
                     ],
@@ -63,9 +66,18 @@ class FeedPage extends StatelessWidget {
                 crossAxisCount: 3),
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
-              return Image.network(
-                snapshot.data![index],
-                fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PlaceDescription()),
+                  );
+                },
+                child: Image.network(
+                  snapshot.data![index],
+                  fit: BoxFit.cover,
+                ),
               );
             },
           );

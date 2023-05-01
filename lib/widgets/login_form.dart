@@ -140,20 +140,29 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               const Text('Or'),
-              InkWell(
-                onTap: () {
+              OutlinedButton(
+                onPressed: () {
                   Get.off(const SignupPage());
                 },
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide.none, // Make the border invisible
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
                 child: const Padding(
                   padding: EdgeInsets.all(
                       20), // Adjust the padding to increase the reaction area
-                  child: Text('JOIN NOW',
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold)),
+                  child: Text(
+                    'JOIN NOW',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),

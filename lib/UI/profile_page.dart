@@ -41,14 +41,6 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           title: const Text(''),
           iconTheme: const IconThemeData(color: Colors.black),
-          actions: [
-            IconButton(
-                icon: const Icon(Icons.notifications_outlined),
-                onPressed: () {}),
-            IconButton(
-                icon: const Icon(Icons.share_outlined), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.search), onPressed: () {}),
-          ],
         ),
         drawer: menuBar(),
         body: Stack(
@@ -68,31 +60,134 @@ class _ProfileState extends State<Profile> {
 
   Widget menuBar() {
     return Drawer(
-        child: ListView(
-      children: [
-        const UserAccountsDrawerHeader(
-            accountName: Text('accountName'),
-            accountEmail: Text('accountEmail')),
-        ListTile(
-          title: const Text('Calendario'),
-          onTap: () {
-            Get.to(const CalendarPage());
-          },
-        ),
-        ListTile(
-          title: const Text('Inventario'),
-          onTap: () {
-            Get.to(const InventoryPage());
-          },
-        ),
-        ListTile(
-          title: const Text('Tienda'),
-          onTap: () {
-            Get.to(const StorePage());
-          },
-        ),
-      ],
-    ));
+        backgroundColor: const Color(0xFFF07B2B),
+        child: Container(
+          decoration: const BoxDecoration(
+            /*image: DecorationImage(
+              image: AssetImage('assetsimages/monoMenu.png'),
+              fit: BoxFit.cover,
+            ),*/
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+                right: 60.0), // Agregar padding de 16 unidades a la derecha
+            child: ListView(
+              children: [
+                UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF07B2B),
+                  ),
+                  accountName: Container(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'accountName',
+                    ),
+                  ),
+                  accountEmail: Container(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'accountEmail',
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Notificaciones',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.notifications_active_outlined,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Calendario',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.calendar_month_outlined,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(const CalendarPage());
+                  },
+                ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Inventario',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.check_box_outlined,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(const InventoryPage());
+                  },
+                ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Tienda',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.store_mall_directory_outlined,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(const StorePage());
+                  },
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget photoLoad() {

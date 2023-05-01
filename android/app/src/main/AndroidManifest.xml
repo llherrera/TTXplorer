@@ -14,7 +14,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDytj5l8LUaEZxcvCdV9LK3WDhIB3GiZO8" />
 
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
