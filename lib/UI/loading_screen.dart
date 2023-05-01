@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 import 'authselect_page.dart';
+import 'conociendote_page.dart';
 import 'login_page.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 // ignore: todo
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      Get.off(const LoginPage());
+      Get.off(const Conociendote());
     });
   }
 
