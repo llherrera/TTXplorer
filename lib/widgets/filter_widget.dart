@@ -50,14 +50,15 @@ class _FilterState extends State<Filter> {
                 IconButton(onPressed: (){}, icon: const Icon(Icons.settings_outlined, size: 40,)),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
+                  height: 42,
                   child: TextField(
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 15),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xFFF07B2B),
                       hintText: 'Search',
-                      hintStyle: const TextStyle(fontSize: 20),
+                      hintStyle: const TextStyle(fontSize: 15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none
@@ -73,6 +74,8 @@ class _FilterState extends State<Filter> {
               value: priceValues,
               max: 100,
               label: priceValues.round().toString(),
+              activeColor: Colors.black,
+              inactiveColor: Colors.black,
               onChanged: (newvalue) {
                 setState(() {
                   priceValues = newvalue;
@@ -83,6 +86,8 @@ class _FilterState extends State<Filter> {
               value: distanceValues,
               max: 100,
               label: distanceValues.round().toString(),
+              activeColor: Colors.black,
+              inactiveColor: Colors.black,
               onChanged: (newvalue) {
                 setState(() {
                   distanceValues = newvalue;
@@ -92,35 +97,29 @@ class _FilterState extends State<Filter> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Ink(
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFF713D8D),
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(onPressed: (){
-                    if (isPressedB || isPressedC) {
-                      filterBy('fruta');
-                      isPressedA = true;
-                      isPressedB = false;
-                      isPressedC = false;
-                    }else if (!isPressedA) {
-                      filterBy('fruta');
-                      isPressedA = true;
-                      isPressedB = false;
-                      isPressedC = false;
-                    }else {
-                      filterBy('void');
-                      isPressedA = false;
-                    }
-                    }, icon: Image.asset('assets/icons/cereza_icon.png', color: isPressedA ? Colors.red : Colors.black),
-                  ),
+                Stack(
+                  children: [
+                    CircleAvatar(),
+                    IconButton(onPressed: (){
+                      if (isPressedB || isPressedC) {
+                        filterBy('fruta');
+                        isPressedA = true;
+                        isPressedB = false;
+                        isPressedC = false;
+                      }else if (!isPressedA) {
+                        filterBy('fruta');
+                        isPressedA = true;
+                        isPressedB = false;
+                        isPressedC = false;
+                      }else {
+                        filterBy('void');
+                        isPressedA = false;
+                      }
+                      }, icon: Image.asset('assets/icons/cereza_icon.png', color: isPressedA ? Colors.red : Colors.black),
+                    ),
+                  ],
                 ),
-                Ink(
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFF713D8D),
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(onPressed: (){
+                IconButton(onPressed: (){
                     if (isPressedA || isPressedC) {
                       filterBy('semilla');
                       isPressedB = true;
@@ -136,30 +135,24 @@ class _FilterState extends State<Filter> {
                       isPressedB = false;
                     }
                     }, icon: Image.asset('assets/icons/semillas_icon.png', color: isPressedB ? Colors.red : Colors.black),
-                  )
+                  
                 ),
-                Ink(
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFF713D8D),
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(onPressed: (){
-                    if (isPressedB || isPressedA) {
-                      filterBy('insecto');
-                      isPressedC = true;
-                      isPressedB = false;
-                      isPressedA = false;
-                    }else if (!isPressedC) {
-                      filterBy('insecto');
-                      isPressedC = true;
-                      isPressedB = false;
-                      isPressedA = false;
-                    }else {
-                      filterBy('void');
-                      isPressedC = false;
-                    }
-                    }, icon: Image.asset('assets/icons/arana_icon.png', color: isPressedC ? Colors.red : Colors.black),
-                  )
+                IconButton(onPressed: (){
+                  if (isPressedB || isPressedA) {
+                    filterBy('insecto');
+                    isPressedC = true;
+                    isPressedB = false;
+                    isPressedA = false;
+                  }else if (!isPressedC) {
+                    filterBy('insecto');
+                    isPressedC = true;
+                    isPressedB = false;
+                    isPressedA = false;
+                  }else {
+                    filterBy('void');
+                    isPressedC = false;
+                  }
+                  }, icon: Image.asset('assets/icons/arana_icon.png', color: isPressedC ? Colors.red : Colors.black),
                 ),
               ],
             )
