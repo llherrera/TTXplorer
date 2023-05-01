@@ -94,48 +94,60 @@ class _FilterState extends State<Filter> {
                 });
               }
             ),
+            Stack(
+              children: [
+                const Positioned(
+                  top: 5,
+                  left: 3,
+                  child: CircleAvatar( backgroundColor: Color(0xFF713D8F),),
+                ),
+                Positioned(
+                  top: 5,
+                  left: MediaQuery.of(context).size.width * 0.39,
+                  child: const CircleAvatar( backgroundColor: Color(0xFF713D8F),),
+                ),
+                const Positioned(
+                  top: 5,
+                  right: 3,
+                  child: CircleAvatar( backgroundColor: Color(0xFF713D8F),),
+                ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Stack(
-                  children: [
-                    CircleAvatar(),
-                    IconButton(onPressed: (){
-                      if (isPressedB || isPressedC) {
-                        filterBy('fruta');
-                        isPressedA = true;
-                        isPressedB = false;
-                        isPressedC = false;
-                      }else if (!isPressedA) {
-                        filterBy('fruta');
-                        isPressedA = true;
-                        isPressedB = false;
-                        isPressedC = false;
-                      }else {
-                        filterBy('void');
-                        isPressedA = false;
-                      }
-                      }, icon: Image.asset('assets/icons/cereza_icon.png', color: isPressedA ? Colors.red : Colors.black),
-                    ),
-                  ],
+                IconButton(onPressed: (){
+                  if (isPressedB || isPressedC) {
+                    filterBy('fruta');
+                    isPressedA = true;
+                    isPressedB = false;
+                    isPressedC = false;
+                  }else if (!isPressedA) {
+                    filterBy('fruta');
+                    isPressedA = true;
+                    isPressedB = false;
+                    isPressedC = false;
+                  }else {
+                    filterBy('void');
+                    isPressedA = false;
+                  }
+                  }, icon: Image.asset('assets/icons/cereza_icon.png', color: isPressedA ? Colors.red : Colors.black),
                 ),
                 IconButton(onPressed: (){
-                    if (isPressedA || isPressedC) {
-                      filterBy('semilla');
-                      isPressedB = true;
-                      isPressedA = false;
-                      isPressedC = false;
-                    }else if (!isPressedB) {
-                      filterBy('semilla');
-                      isPressedB = true;
-                      isPressedA = false;
-                      isPressedC = false;
-                    }else {
-                      filterBy('void');
-                      isPressedB = false;
-                    }
-                    }, icon: Image.asset('assets/icons/semillas_icon.png', color: isPressedB ? Colors.red : Colors.black),
-                  
+                  if (isPressedA || isPressedC) {
+                    filterBy('semilla');
+                    isPressedB = true;
+                    isPressedA = false;
+                    isPressedC = false;
+                  }else if (!isPressedB) {
+                    filterBy('semilla');
+                    isPressedB = true;
+                    isPressedA = false;
+                    isPressedC = false;
+                  }else {
+                    filterBy('void');
+                    isPressedB = false;
+                  }
+                  }, icon: Image.asset('assets/icons/semillas_icon.png', color: isPressedB ? Colors.red : Colors.black),
                 ),
                 IconButton(onPressed: (){
                   if (isPressedB || isPressedA) {
@@ -153,9 +165,9 @@ class _FilterState extends State<Filter> {
                     isPressedC = false;
                   }
                   }, icon: Image.asset('assets/icons/arana_icon.png', color: isPressedC ? Colors.red : Colors.black),
-                ),
+                )
               ],
-            )
+            )])
           ],
         ),
       )

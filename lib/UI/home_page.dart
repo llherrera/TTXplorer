@@ -120,6 +120,13 @@ class _HomeState extends State<Home> {
     setLocales(voidLocales);
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    positionStream!.cancel();
+  }
+
   bool quest = true;
   final picker = ImagePicker();
   String _search = '';
@@ -273,7 +280,7 @@ class _HomeState extends State<Home> {
               flex: 4,
               child: _buildMap(),
             ),
-            Flexible(flex: 1, child: Filter(locales: voidLocales, callback: setLocales))
+            Flexible(flex: 2, child: Filter(locales: voidLocales, callback: setLocales))
           ],
         ),
         Positioned(
