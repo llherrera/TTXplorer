@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>874965142590-c57ms1m2englqj9pva4q1rqrg1b0qv0u.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.874965142590-c57ms1m2englqj9pva4q1rqrg1b0qv0u</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAsmys8NxtqoJXaSwCiTmIDBQt2sgwq2_8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>874965142590</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.ttxplorer</string>
+	<key>PROJECT_ID</key>
+	<string>titixplorerdb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>titixplorerdb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:874965142590:ios:c83af183c38360c88a956f</string>
+	<key>DATABASE_URL</key>
+	<string>https://titixplorerdb-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

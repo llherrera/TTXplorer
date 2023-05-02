@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ttxplorer/UI/place_description.dart';
+import 'package:ttxplorer/ui/pages/place_description.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -16,7 +16,7 @@ class FeedPage extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Expanded(
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Container(
@@ -67,13 +67,13 @@ class FeedPage extends StatelessWidget {
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                onTap: () {
+                /*onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const PlaceDescription()),
                   );
-                },
+                },*/
                 child: Image.network(
                   snapshot.data![index],
                   fit: BoxFit.cover,

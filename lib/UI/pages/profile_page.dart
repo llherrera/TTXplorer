@@ -38,24 +38,28 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(''),
-          iconTheme: const IconThemeData(color: Colors.black),
-        ),
-        drawer: menuBar(),
-        body: Stack(
-          children: <Widget>[
-            Expanded(
-                child: SingleChildScrollView(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF38005F),
+        title: const Text(''),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      drawer: menuBar(),
+      body: Stack(
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   photoLoad(),
                   photos(),
                 ],
               ),
-            ))
-          ],
-        ));
+            )
+          )
+        ],
+      )
+    );
   }
 
   Widget menuBar() {
@@ -69,8 +73,7 @@ class _ProfileState extends State<Profile> {
             ),*/
           ),
           child: Padding(
-            padding: const EdgeInsets.only(
-                right: 60.0), // Agregar padding de 16 unidades a la derecha
+            padding: const EdgeInsets.only(right: 60.0),
             child: ListView(
               children: [
                 UserAccountsDrawerHeader(
@@ -191,7 +194,33 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget photoLoad() {
-    return Column(children: [
+    return /*Expanded(child: 
+    Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFF38005F),
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+      ),
+      child: Column(
+        children: [
+          IconButton(
+            icon: _image == null ? 
+                          const Icon(Icons.photo_camera, size: 70) :
+                          ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
+            onPressed: () async {
+              final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+              if (pickedFile != null) {
+                setState(() {
+                  _image = File(pickedFile.path);
+                });
+              }
+            },
+          ),
+        ]
+      ),
+    ));*/
+    
+    Column(children: [
       Container(
         width: 130,
         height: 130,
@@ -200,10 +229,11 @@ class _ProfileState extends State<Profile> {
           color: Colors.grey,
         ),
         child: IconButton(
-          icon: const Icon(Icons.photo_camera, size: 70),
+          icon: _image == null ? 
+                          const Icon(Icons.photo_camera, size: 70) :
+                          ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
           onPressed: () async {
-            final pickedFile =
-                await ImagePicker().pickImage(source: ImageSource.gallery);
+            final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
             if (pickedFile != null) {
               setState(() {
                 _image = File(pickedFile.path);
@@ -220,34 +250,19 @@ class _ProfileState extends State<Profile> {
           color: Colors.grey,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Text(_username,
-            style: const TextStyle(fontSize: 20, color: Colors.black)),
+        child: Text(_username, style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
       SizedBox(
-          width: 200,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.food_bank,
-                    size: 40,
-                  )),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.food_bank,
-                    size: 40,
-                  )),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.food_bank,
-                    size: 40,
-                  )),
-            ],
-          ))
+        width: 200,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
+          ],
+        )
+      )
     ]);
   }
 
@@ -262,8 +277,7 @@ class _ProfileState extends State<Profile> {
           return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return Image.network(

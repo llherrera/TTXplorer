@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Data/local_model.dart';
+import '../Data/model/local_model.dart';
 
 // ignore: must_be_immutable
 class Filter extends StatefulWidget {

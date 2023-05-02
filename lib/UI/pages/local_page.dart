@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:ttxplorer/UI/feed_page.dart';
 
-class PlaceDescription extends StatefulWidget {
-  const PlaceDescription({super.key});
+import '../../Data/model/local_model.dart';
+import '../../widgets/mision_button.dart';
+
+// ignore: must_be_immutable
+class LocalPage extends StatefulWidget {
+  LocalPage({super.key, required this.local});
+  Local local;
 
   @override
-  _PlaceDescriptionState createState() => _PlaceDescriptionState();
+  State<LocalPage> createState() => _LocalPageState();
 }
 
-class _PlaceDescriptionState extends State<PlaceDescription> {
+class _LocalPageState extends State<LocalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../UI/home_page.dart';
-import '../UI/signup_page.dart';
+import '../ui/pages/signup_page.dart';
+import '../ui/pages/home_page.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);

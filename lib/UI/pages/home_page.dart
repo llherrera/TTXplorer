@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +9,12 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import '../Data/local_model.dart';
-import '../widgets/filter_widget.dart';
+import '../../Data/model/local_model.dart';
+import '../../widgets/filter_widget.dart';
+import './place_description.dart';
 import './feed_page.dart';
 import './profile_page.dart';
-import 'local_page.dart';
+import './local_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,20 +46,43 @@ class _HomePageState extends State<HomePage> {
     Profile(),
   ];
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          children: _widgetOptions,
+        body: Container(
+          child: _widgetOptions.elementAt(_selectedIndex)
         ),
-        bottomNavigationBar: BottomNavyBar(
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: const Color(0xFF713D8F),
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedItemColor: const Color(0xFFF07B2B),
+          iconSize: 20,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Feed',
+              backgroundColor:  Color(0xFF713D8F),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor:  Color(0xFF713D8F),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+              backgroundColor:  Color(0xFF713D8F),
+            ),
+          ],)
+        /*BottomNavyBar(
           backgroundColor: const Color(0xFF713D8F),
           items: <BottomNavyBarItem> [
             BottomNavyBarItem(
@@ -84,7 +107,7 @@ class _HomePageState extends State<HomePage> {
             setState(() => _selectedIndex = index);
             _pageController.jumpToPage(index);
           },
-        ),
+        ),*/
       ),
     );
   }
@@ -122,7 +145,6 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     positionStream!.cancel();
   }

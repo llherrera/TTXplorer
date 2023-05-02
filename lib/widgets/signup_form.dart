@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../UI/avatarchoice_page.dart';
-import '../UI/login_page.dart';
-import '../UI/signup_page.dart';
-import '../UI/home_page.dart';
+import '../ui/pages/avatarchoice_page.dart';
+import '../ui/pages/login_page.dart';
+import '../ui/pages/signup_page.dart';
+import '../ui/pages/home_page.dart';
 
 class SignupForm extends StatelessWidget {
   const SignupForm({Key? key}) : super(key: key);
