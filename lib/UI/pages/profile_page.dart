@@ -2,6 +2,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/auth_controller.dart';
 import 'inventory_page.dart';
 import 'store_page.dart';
 import 'calendar_page.dart';
@@ -14,6 +15,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final AuthenticationController authControl = Get.find();
   String _username = 'username';
 
   File? _image;
@@ -67,31 +69,21 @@ class _ProfileState extends State<Profile> {
         backgroundColor: const Color(0xFFF07B2B),
         child: Container(
           decoration: const BoxDecoration(
-            /*image: DecorationImage(
-              image: AssetImage('assetsimages/monoMenu.png'),
+            image: DecorationImage(
+              image: AssetImage('assets/images/monoMenu.png'),
               fit: BoxFit.cover,
-            ),*/
+            ),
           ),
           child: Padding(
             padding: const EdgeInsets.only(right: 60.0),
             child: ListView(
               children: [
-                UserAccountsDrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF07B2B),
-                  ),
-                  accountName: Container(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'accountName',
-                    ),
-                  ),
-                  accountEmail: Container(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'accountEmail',
-                    ),
-                  ),
+                DrawerHeader(
+                  decoration: const BoxDecoration(color: Color(0xFFF07B2B)),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add_circle_outline_outlined, size: 150, color: Colors.white,)
+                  )
                 ),
                 ListTile(
                   title: Row(
@@ -186,6 +178,29 @@ class _ProfileState extends State<Profile> {
                   onTap: () {
                     Get.to(const StorePage());
                   },
+                ),
+                const SizedBox(height: 150,),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Cerrar sesión',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.logout,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  onTap: () {authControl.logout();},
                 ),
               ],
             ),

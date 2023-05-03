@@ -52,12 +52,12 @@ class UserController extends GetxController {
     _users[_users.indexOf(oldEntry)] = User.fromJson(event.snapshot, json);
   }
 
-  Future<void> createUser(name, email, avatar, password, uid) async {
+  Future<void> createUser(name, email, password, uid) async {
     try {
       await databaseRef
           .child('userList')
           .push()
-          .set({'name': name,'email': email, 'avatar': avatar, 'password': password, 'uid': uid});
+          .set({'name': name,'email': email, 'password': password, 'uid': uid});
     } catch (error) {
       // ignore: avoid_print
       print(error);

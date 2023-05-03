@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../ui/controllers/auth_controller.dart';
 import '../ui/pages/signup_page.dart';
 import '../ui/pages/home_page.dart';
 
@@ -13,7 +14,15 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final AuthenticationController authControl = Get.find();
+  
   bool _keepMeLoggedIn = false;
+  String _password = '';
+  String _email = '';
+
+  void login(String usern, passw) {
+    authControl.login(usern, passw);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +39,17 @@ class _LoginFormState extends State<LoginForm> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color(0xFFF7A935),
-                  labelText: '  USERNAME',
+                  labelText: '  EMAIL',
                   labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.bold),
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 7), // Adjust vertical padding
+                  contentPadding: const EdgeInsets.symmetric(vertical: 7), // Adjust vertical padding
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(15), // Adjust the corner radius
+                    borderRadius: BorderRadius.circular(15), // Adjust the corner radius
                   ),
                 ),
+                onChanged: (value) => _email = value,
               ),
               const SizedBox(height: 8),
               TextFormField(
@@ -54,13 +62,12 @@ class _LoginFormState extends State<LoginForm> {
                       color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.bold),
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 7), // Adjust vertical padding
+                  contentPadding: const EdgeInsets.symmetric(vertical: 7), // Adjust vertical padding
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(15), // Adjust the corner radius
+                    borderRadius:BorderRadius.circular(15), // Adjust the corner radius
                   ),
                 ),
+                onChanged: (value) => _password = value,
               ),
               Align(
                 alignment: Alignment.centerRight,
@@ -77,7 +84,7 @@ class _LoginFormState extends State<LoginForm> {
                 // Add a row with the two icons
                 mainAxisAlignment: MainAxisAlignment.center, // Center the icons
                 children: [
-                  Container(
+                  Container(/* Cambiar por iconButton */
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.blue,
@@ -129,21 +136,36 @@ class _LoginFormState extends State<LoginForm> {
               SizedBox(
                 width: 200,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Get.off(const HomePage()); // TODO: Handle sign in
-                  },
                   style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color(0xFF713D8F) // Set the button color
-                      ),
+                      backgroundColor: const Color(0xFF713D8F) // Set the button color
+                  ),
                   child: const Text('SIGN IN', style: TextStyle(fontSize: 15)),
+                  onPressed: () async {
+                    if (_email.isNotEmpty || _password.isNotEmpty) {
+                      login(_email, _password);
+                      Get.off(const HomePage());
+                    }else {
+                      return showDialog<void> (
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) =>
+                        AlertDialog(
+                          title: const Text('Error'),
+                          content: const Text('Please fill in all the fields'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {Get.back();},
+                              child: const Text('OK'),
+                            )
+                          ],
+                        )
+                      );
+                    }
+                  },
                 ),
               ),
               const Text('Or'),
               OutlinedButton(
-                onPressed: () {
-                  Get.off(const SignupPage());
-                },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide.none, // Make the border invisible
                   shape: RoundedRectangleBorder(
@@ -151,10 +173,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 child: const Padding(
-                  padding: EdgeInsets.all(
-                      20), // Adjust the padding to increase the reaction area
-                  child: Text(
-                    'JOIN NOW',
+                  padding: EdgeInsets.all(20), // Adjust the padding to increase the reaction area
+                  child: Text('JOIN NOW',
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.black,
@@ -162,6 +182,9 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                 ),
+                onPressed: () {
+                  Get.off(const SignupPage());
+                },
               )
             ],
           ),

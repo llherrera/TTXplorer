@@ -16,10 +16,9 @@ class SignupPage extends StatelessWidget {
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  SizedBox(height: 50),
-                  Text(
-                    'Create Account',
+                children: [
+                  const SizedBox(height: 50),
+                  const Text('Create Account',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -27,9 +26,12 @@ class SignupPage extends StatelessWidget {
                         fontFamily: 'RobotoSlab',
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10),
-                  SignupForm(),
-                  SizedBox(height: 100),
+                  const SizedBox(height: 10),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: SignupForm(),
+                  ),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),

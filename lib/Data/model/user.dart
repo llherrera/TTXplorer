@@ -5,12 +5,12 @@ class User {
   String? key;
   String name;
   String email;
-  String avatar;
+  String? avatar;
   String password;
   String uid;
   File? photo;
 
-  User(this.name, this.email, this.avatar, this.password, this.uid);
+  User(this.name, this.email, this.password, this.uid);
 
   User.fromJson(DataSnapshot snapshot, Map<dynamic, dynamic> json) :
     key = snapshot.key ?? '0',

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:linkedin_login/linkedin_login.dart';
 import 'firebase_central.dart';
-import 'pages/authselect_page.dart';
-import 'pages/login_page.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
@@ -26,8 +24,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          const Color(0xFF38005F), // set the background color to dark green
+      backgroundColor: const Color(0xFF38005F),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

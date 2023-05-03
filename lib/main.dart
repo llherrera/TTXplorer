@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ttxplorer/ui/controllers/auth_controller.dart';
+import 'package:ttxplorer/ui/controllers/user_controller.dart';
 
 import 'ui/pages/avatarchoice_page.dart';
 import 'ui/loading_screen.dart';
@@ -30,6 +32,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(UserController());
+    Get.put(AuthenticationController());
+    
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TTXplorer',
