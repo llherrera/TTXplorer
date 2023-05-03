@@ -28,7 +28,6 @@ class User {
       "password": password,
       "uid": uid,
     };
-  
   }
 
   set setPhoto(File? photo) => this.photo = photo;

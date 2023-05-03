@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ttxplorer/ui/controllers/auth_controller.dart';
+import 'package:ttxplorer/ui/controllers/local_controller.dart';
 import 'package:ttxplorer/ui/controllers/user_controller.dart';
 
 import 'ui/pages/avatarchoice_page.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(UserController());
     Get.put(AuthenticationController());
+    Get.put(LocalController());
     
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

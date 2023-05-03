@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
-import '../../Data/model/user.dart';
+import '../../Data/model/local.dart';
 import 'auth_controller.dart';
 
-class UserController extends GetxController {
+class LocalController extends GetxController {
   // ignore: prefer_final_fields
-  var _users = <User>[].obs;
+  var _locales = <LocalB>[].obs;
 
   final databaseRef = FirebaseDatabase.instance.ref();
 
@@ -14,23 +14,23 @@ class UserController extends GetxController {
 
   late StreamSubscription<DatabaseEvent> updateEntryStreamSubscription;
 
-  get users {
+  get locales {
     AuthenticationController authenticationController = Get.find();
-    return _users
+    return _locales
         .where((entry) => entry.uid != authenticationController.getUid())
         .toList();
   }
 
-  get allUsers => _users;
+  get allLocales => _locales;
 
   void start() {
-    _users.clear();
+    _locales.clear();
 
     newEntryStreamSubscription =
-        databaseRef.child("userList").onChildAdded.listen(_onEntryAdded);
+        databaseRef.child("localList").onChildAdded.listen(_onEntryAdded);
 
     updateEntryStreamSubscription =
-        databaseRef.child("userList").onChildChanged.listen(_onEntryChanged);
+        databaseRef.child("localList").onChildChanged.listen(_onEntryChanged);
   }
 
   void stop() {
@@ -40,31 +40,33 @@ class UserController extends GetxController {
 
   _onEntryAdded(DatabaseEvent event) {
     final json = event.snapshot.value as Map<dynamic, dynamic>;
-    _users.add(User.fromJson(event.snapshot, json));
+    _locales.add(LocalB.fromJson(event.snapshot, json));
   }
 
   _onEntryChanged(DatabaseEvent event) {
-    var oldEntry = _users.singleWhere((entry) {
+    var oldEntry = _locales.singleWhere((entry) {
       return entry.key == event.snapshot.key;
     });
 
     final json = event.snapshot.value as Map<dynamic, dynamic>;
-    _users[_users.indexOf(oldEntry)] = User.fromJson(event.snapshot, json);
+    _locales[_locales.indexOf(oldEntry)] = LocalB.fromJson(event.snapshot, json);
   }
 
-  Future<void> createUser(name, email, password, uid) async {
+  Future<void> createLocal(localName, localDescription, localImage, type, ubi, uid) async {
     try {
       await databaseRef
-          .child('userList')
+          .child('localList')
           .push()
-          .set({'name': name,
-                'email': email,
-                'password': password,
+          .set({'localName': localName,
+                'localDescription': localDescription,
+                'localImage': localImage,
+                'type': type,
+                'ubi': ubi,
                 'uid': uid});
-    } catch (error) {
+    } catch (e) {
       // ignore: avoid_print
-      print(error);
-      return Future.error(error);
+      print(e);
+      return Future.error(e);
     }
   }
 }

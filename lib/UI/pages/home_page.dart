@@ -9,8 +9,11 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ttxplorer/ui/controllers/user_controller.dart';
 import '../../Data/model/local_model.dart';
 import '../../widgets/filter_widget.dart';
+import '../controllers/auth_controller.dart';
+import '../controllers/local_controller.dart';
 import './place_description.dart';
 import './feed_page.dart';
 import './profile_page.dart';
@@ -29,7 +32,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _pageController = PageController(initialPage: 1);
   }
@@ -81,33 +83,8 @@ class _HomePageState extends State<HomePage> {
               label: 'Profile',
               backgroundColor:  Color(0xFF713D8F),
             ),
-          ],)
-        /*BottomNavyBar(
-          backgroundColor: const Color(0xFF713D8F),
-          items: <BottomNavyBarItem> [
-            BottomNavyBarItem(
-              icon: const Icon(Icons.search),
-              title: const Text('Feed'),
-              activeColor: const Color(0xFFF07B2B),
-            ),
-            BottomNavyBarItem(
-              icon: const Icon(Icons.home),
-              title: const Text('Home'),
-              activeColor: const Color(0xFFF07B2B),
-            ),
-            BottomNavyBarItem(
-              icon: const Icon(Icons.person),
-              title: const Text('Profile'),
-              activeColor: const Color(0xFFF07B2B),
-            ),
           ],
-          selectedIndex: _selectedIndex,
-          showElevation: true, // use this to remove appBar's elevation
-          onItemSelected: (index) {
-            setState(() => _selectedIndex = index);
-            _pageController.jumpToPage(index);
-          },
-        ),*/
+        )
       ),
     );
   }
@@ -126,6 +103,10 @@ const LocationSettings locationSettings = LocationSettings(
 );
 
 class _HomeState extends State<Home> {
+  AuthenticationController authControl = Get.find();
+  UserController userControl = Get.find();
+  LocalController localControl = Get.find();
+
   Set<Marker> markerLocales = {};
   late String mapStyle;
   
@@ -136,11 +117,26 @@ class _HomeState extends State<Home> {
   ];
   Iterable<Local> voidLocales = [];//aqui estarán los locales filtrados, es para no perder información
 
+  Local? localDest;
+
   @override
   void initState() {
     super.initState();
     getLocales();
     setLocales(voidLocales);
+
+    positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+        (Position? position) {
+          if (position != null) {
+            _currentPosition = position;
+            _mapController.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: LatLng(position.latitude, position.longitude),
+                zoom: 12.0,
+              ),
+            ));
+          }
+    });
   }
 
   @override
@@ -149,8 +145,9 @@ class _HomeState extends State<Home> {
     positionStream!.cancel();
   }
 
-  bool quest = true;
+  bool quest = false;
   final picker = ImagePicker();
+  // ignore: unused_field
   String _search = '';
 
   void setSearch(String search) {
@@ -238,17 +235,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildMap() {
-    positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-        (Position? position) {
-          if (position != null) {
-            _mapController.animateCamera(CameraUpdate.newCameraPosition(
-              CameraPosition(
-                target: LatLng(position.latitude, position.longitude),
-                zoom: 12.0,
-              ),
-            ));
-          }
-    });
     return GoogleMap(
       gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
         Factory<OneSequenceGestureRecognizer>(
@@ -271,21 +257,19 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void checkProximityMission() async {
-    double destLat1 = 37.7749;
-    double destLat2 = destLat1;
-    double destLng1 = -122.4194;
-    double destLng2 = destLng1;
+  double checkProximityMission() {
+    localDest = locales.elementAt(0);
+
+    double destLat1 = localDest!.ubi.latitude;
+    double destLng1 = localDest!.ubi.longitude;
+    double destLat2 = _currentPosition.latitude;
+    double destLng2 = _currentPosition.longitude;
 
     // Calcular la distancia entre la ubicación actual del usuario y la ubicación de destino utilizando la fórmula Haversine
     double distance = Geolocator.distanceBetween(
         destLat1, destLng1, destLat2, destLng2);
 
-    // Comprobar si la distancia es menor que un umbral predefinido
-    double proximityThreshold = 1000.0; // metros
-    if (distance < proximityThreshold) {
-      quest = true;
-    }
+    return distance;
   }
 
   void camara() async {
@@ -305,57 +289,14 @@ class _HomeState extends State<Home> {
             Flexible(flex: 2, child: Filter(locales: voidLocales, callback: setLocales))
           ],
         ),
-        Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.settings_outlined,
-                          size: 40,
-                        )),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 20),
-                          decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey,
-                            hintText: 'Search',
-                            hintStyle: TextStyle(fontSize: 20),
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (value) => setSearch(value),
-                        )),
-                    IconButton(
-                        onPressed: () {
-                          checkProximityMission();
-                        },
-                        icon: const Icon(
-                          Icons.search,
-                          size: 40,
-                        )),
-                  ],
-                ))),
-        Visibility(
-          visible: quest,
-          child: Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
+        if (checkProximityMission() < 50.0) ...[
+          Positioned(top: 0, left: 0, right: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               color: const Color(0xFFF07B2B),
               child: Column(
                 children: [
-                  const Text(
-                    '¡Has llegado a tu destino! Toma una foto y reclama tu recompensa.',
+                  const Text('¡Has llegado a tu destino! Toma una foto y reclama tu recompensa.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -369,8 +310,7 @@ class _HomeState extends State<Home> {
                       camara();
                     },
                     icon: const Icon(Icons.camera_alt),
-                    label: const Text(
-                      'Cámara',
+                    label: const Text('Cámara',
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Open Sans',
@@ -385,7 +325,7 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-        ),
+        ]
       ],
     );
   }
