@@ -6,6 +6,7 @@ import '../controllers/auth_controller.dart';
 import '../controllers/local_controller.dart';
 import '../controllers/user_controller.dart';
 import 'inventory_page.dart';
+import 'local_form.dart';
 import 'login_page.dart';
 import 'store_page.dart';
 import 'calendar_page.dart';
@@ -75,7 +76,7 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
             )
-          )
+          ),
         ],
       )
     );
@@ -98,7 +99,9 @@ class _ProfileState extends State<Profile> {
                 DrawerHeader(
                   decoration: const BoxDecoration(color: Color(0xFFF07B2B)),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const FormUploadLocal());
+                    },
                     icon: const Icon(Icons.add_circle_outline_outlined, size: 150, color: Colors.white,)
                   )
                 ),

@@ -198,6 +198,7 @@ class _HomeState extends State<Home> {
   StreamSubscription<Position>? positionStream;
 
   void _getCurrentLocation() async {
+    //localControl.initializeLocales();
     final position = await _determinatePosition();
     setState(() {
       _currentPosition = position;

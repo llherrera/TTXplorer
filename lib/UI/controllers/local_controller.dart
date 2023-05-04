@@ -72,8 +72,8 @@ class LocalController extends GetxController {
     }
   }
 
-  void initializeChats() async {
-    String localPhotoURL = await uploadImageF(File('assets/images/ccbuenavista.jpg'), 'semillas');
+  void initializeLocales() async {
+    String localPhotoURL = await uploadImageF(File( 'assets/images/ccbuenavista.jpg'), 'semillas');
     createLocal('Buenavista',
                 'Reconocimiento a las marcas que han crecido durante estos 20 años con el Centro Comercial Buenavista. Gracias por creer en nosotros y permitirnos construir ciudad juntos.',
                 localPhotoURL,
