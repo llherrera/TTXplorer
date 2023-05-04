@@ -63,7 +63,7 @@ class SignupForm extends StatelessWidget {
                   onPressed: () async {
                     if(_username.isNotEmpty || _email.isNotEmpty || _password.isNotEmpty) {
                       signIn();
-                      //Get.off(const AvatarChoicePage());
+                      Get.off(const AvatarChoicePage());
                     } else {
                       return showDialog<void> (
                         context: context,

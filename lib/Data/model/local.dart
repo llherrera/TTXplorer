@@ -6,17 +6,17 @@ class LocalB {
   String? key;
   String localName;
   String localDescription;
-  File localImage;
+  String localImageURL;
   String type;
   LatLng ubi;
   String uid;
 
-  LocalB(this.localName, this.localDescription, this.localImage, this.type, this.ubi, this.uid);
+  LocalB(this.localName, this.localDescription, this.localImageURL, this.type, this.ubi, this.uid);
 
   LocalB.fromJson(DataSnapshot snapshot, Map<dynamic, dynamic> json) :
     localName = json["localName"] ?? 'localName',
     localDescription = json["localDescription"] ?? 'localDescription',
-    localImage = json["localImage"] ?? 'localImage',
+    localImageURL = json["localImage"] ?? 'localImage',
     type = json["type"] ?? 'type',
     ubi = json["ubi"] ?? 'ubi',
     uid = json["uid"] ?? 'uid';
@@ -25,7 +25,7 @@ class LocalB {
     return {
       "localName": localName,
       "localDescription": localDescription,
-      "localImage": localImage,
+      "localImageURL": localImageURL,
       "type": type,
       "ubi": ubi,
     };

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import '../../Data/model/local.dart';
+import '../../services/upload_image.dart';
 import 'auth_controller.dart';
 
 class LocalController extends GetxController {
@@ -59,7 +61,7 @@ class LocalController extends GetxController {
           .push()
           .set({'localName': localName,
                 'localDescription': localDescription,
-                'localImage': localImage,
+                'localImageURL': localImage,
                 'type': type,
                 'ubi': ubi,
                 'uid': uid});
@@ -68,5 +70,29 @@ class LocalController extends GetxController {
       print(e);
       return Future.error(e);
     }
+  }
+
+  void initializeChats() async {
+    String localPhotoURL = await uploadImageF(File('assets/images/ccbuenavista.jpg'), 'semillas');
+    createLocal('Buenavista',
+                'Reconocimiento a las marcas que han crecido durante estos 20 años con el Centro Comercial Buenavista. Gracias por creer en nosotros y permitirnos construir ciudad juntos.',
+                localPhotoURL,
+                'semilla',
+                [11.01488064038962, -74.82745006489434],
+                '1');
+    localPhotoURL = await uploadImageF(File('assets/images/caiman-del-rio.jpg'), 'frutas');
+    createLocal('Caiman del rio',
+                'El Caimán del Río es un espacio único en su formato ofreciendo a la ciudad de Barranquilla el primer mercado gastronómico de cara al Río Magdalena con una experiencia de cocinas abiertas bajo un mismo concepto.',
+                localPhotoURL,
+                'fruta',
+                [11.023429370880141, -74.79637497469237],
+                '1');
+    localPhotoURL = await uploadImageF(File('assets/images/plaza-de-la-paz.jpeg'), 'insectos');
+    createLocal('Plaza de la paz',
+                'La plaza de la Paz Juan Pablo II es un espacio público abierto de Barranquilla, Colombia. Está ubicada en un estratégico y céntrico sector de la ciudad, entre las carreras 45 y 46 o avenida Olaya Herrera, y la calles 47 y 53, entre la sede del Banco de la República y la Catedral Metropolitana María Reina.',
+                localPhotoURL,
+                'insecto',
+                [10.988428922594359, -74.7892494693815],
+                '1');
   }
 }

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/auth_controller.dart';
+import '../controllers/local_controller.dart';
+import '../controllers/user_controller.dart';
 import 'inventory_page.dart';
 import 'store_page.dart';
 import 'calendar_page.dart';
@@ -15,8 +17,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final AuthenticationController authControl = Get.find();
-  String _username = 'username';
+  AuthenticationController authControl = Get.find();
+  UserController userControl = Get.find();
+  LocalController localControl = Get.find();
+  String _username = '';
 
   File? _image;
   final picker = ImagePicker();
@@ -39,6 +43,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    _username = authControl.userEmail();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF38005F),
@@ -53,7 +58,18 @@ class _ProfileState extends State<Profile> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  photoLoad(),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF38005F),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      )
+                    ),
+                    width: double.infinity,
+                    child: photoLoad(),
+                  ),
+                  const SizedBox(height: 20),
                   photos(),
                 ],
               ),
@@ -209,19 +225,19 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget photoLoad() {
-    return /*Expanded(child: 
-    Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF38005F),
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
-      ),
-      child: Column(
-        children: [
-          IconButton(
+    return Column(
+      children: [
+        Container(
+          width: 130,
+          height: 130,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.grey,
+          ),
+          child: IconButton(
             icon: _image == null ? 
-                          const Icon(Icons.photo_camera, size: 70) :
-                          ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
+                            const Icon(Icons.photo_camera, size: 70) :
+                            ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
             onPressed: () async {
               final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
               if (pickedFile != null) {
@@ -231,54 +247,30 @@ class _ProfileState extends State<Profile> {
               }
             },
           ),
-        ]
-      ),
-    ));*/
-    
-    Column(children: [
-      Container(
-        width: 130,
-        height: 130,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.grey,
         ),
-        child: IconButton(
-          icon: _image == null ? 
-                          const Icon(Icons.photo_camera, size: 70) :
-                          ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
-          onPressed: () async {
-            final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-            if (pickedFile != null) {
-              setState(() {
-                _image = File(pickedFile.path);
-              });
-            }
-          },
+        const SizedBox(
+          height: 20,
         ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Container(
-        decoration: const BoxDecoration(
-          color: Colors.grey,
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.grey,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(_username.toString(), style: const TextStyle(fontSize: 20, color: Colors.black)),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Text(_username, style: const TextStyle(fontSize: 20, color: Colors.black)),
-      ),
-      SizedBox(
-        width: 200,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-          ],
+        SizedBox(
+          width: 200,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
+            ],
+          )
         )
-      )
-    ]);
+      ]
+    );
   }
 
   Widget photos() {
