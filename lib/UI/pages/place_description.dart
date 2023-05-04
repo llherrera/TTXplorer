@@ -101,8 +101,7 @@ class _PlaceDescriptionState extends State<PlaceDescription> {
                   ],
                 ),
               ),
-
-              // Botones inferiores
+              // Botones 
               Container(
                 padding: const EdgeInsets.all(16),
                 child: Row(
