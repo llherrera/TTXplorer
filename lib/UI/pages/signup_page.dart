@@ -18,7 +18,7 @@ class SignupPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 50),
-                  const Text('Create Account',
+                  const Text('Crear cuenta',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -28,7 +28,7 @@ class SignupPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     child: SignupForm(),
                   ),
                   const SizedBox(height: 100),

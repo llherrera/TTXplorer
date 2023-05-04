@@ -26,7 +26,10 @@ dependencies:
   prompt_dialog: ^1.0.0
   firebase_database: ^10.1.1
   firebase_storage: ^11.0.10
-  
+
+dependency_overrides:
+  firebase_messaging_platform_interface: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

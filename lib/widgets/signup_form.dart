@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ttxplorer/ui/pages/login_page.dart';
 import '../ui/controllers/auth_controller.dart';
-import '../ui/pages/avatarchoice_page.dart';
+import '../ui/pages/conociendote_page.dart';
 
 // ignore: must_be_immutable
 class SignupForm extends StatelessWidget {
@@ -33,16 +34,15 @@ class SignupForm extends StatelessWidget {
             children: [
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Username',
+                  labelText: 'Nombre',
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) => _username = value,
               ),
               const SizedBox(height: 16),
               TextFormField(
-                obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: 'E-mail',
+                  labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) => _email = value,
@@ -51,7 +51,7 @@ class SignupForm extends StatelessWidget {
               TextFormField(
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Contraseña',
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) => _password = value,
@@ -63,7 +63,7 @@ class SignupForm extends StatelessWidget {
                   onPressed: () async {
                     if(_username.isNotEmpty || _email.isNotEmpty || _password.isNotEmpty) {
                       signIn();
-                      Get.off(const AvatarChoicePage());
+                      Get.off(() => const Conociendote());
                     } else {
                       return showDialog<void> (
                         context: context,
@@ -71,7 +71,7 @@ class SignupForm extends StatelessWidget {
                         builder: (BuildContext context) =>
                         AlertDialog(
                           title: const Text('Error'),
-                          content: const Text('Please fill in all the fields'),
+                          content: const Text('Por favor rellenar todos los campos'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {Get.back();},
@@ -85,7 +85,7 @@ class SignupForm extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black45, // Set the button color
                   ),
-                  child: const Text('Continue',
+                  child: const Text('Continuar',
                       style: TextStyle(fontSize: 20, fontFamily: 'RobotoSlab')),
                 ),
               ),
@@ -93,7 +93,12 @@ class SignupForm extends StatelessWidget {
               const Text('Al crear una cuenta, aceptas las Condiciones de Uso y el Aviso de Privacidad de TTXplorer inc.'),
               const SizedBox(height: 16),
               const Text('Ya tienes una cuenta?'),
-              const Text('Inicia Sesión', style: TextStyle(color: Colors.blue)),
+              TextButton(
+                onPressed: () {
+                  Get.off(() => const LoginPage());
+                },
+                child: const Text('Inicia Sesión', style: TextStyle(color: Colors.blue)),
+              )
             ],
           ),
         ),

@@ -58,7 +58,7 @@ class _LoginFormState extends State<LoginForm> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color(0xFFF7A935),
-                  labelText: '  PASSWORD',
+                  labelText: '  CONTRASEÑA',
                   labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -76,7 +76,7 @@ class _LoginFormState extends State<LoginForm> {
                   onPressed: () {
                     // TODO: Handle forgot password
                   },
-                  child: const Text('Forgot password?',
+                  child: const Text('¿Has olvidado la contraseña?',
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                 ),
               ),
@@ -116,8 +116,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              Row(
+              const SizedBox(height: 50),
+              /*Row(
                 children: [
                   Checkbox(
                     value: _keepMeLoggedIn,
@@ -133,14 +133,14 @@ class _LoginFormState extends State<LoginForm> {
                     style: TextStyle(fontSize: 13, color: Colors.black),
                   ),
                 ],
-              ),
+              ),*/
               SizedBox(
                 width: 200,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF713D8F) // Set the button color
                   ),
-                  child: const Text('SIGN IN', style: TextStyle(fontSize: 15)),
+                  child: const Text('Iniciar sesion', style: TextStyle(fontSize: 15)),
                   onPressed: () async {
                     if (_email.isNotEmpty || _password.isNotEmpty) {
                       login(_email, _password);
@@ -152,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
                         builder: (BuildContext context) =>
                         AlertDialog(
                           title: const Text('Error'),
-                          content: const Text('Please fill in all the fields'),
+                          content: const Text('Por favor rellenar todos los campos'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {Get.back();},
@@ -165,7 +165,7 @@ class _LoginFormState extends State<LoginForm> {
                   },
                 ),
               ),
-              const Text('Or'),
+              const Text('O'),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: BorderSide.none, // Make the border invisible
@@ -175,7 +175,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 child: const Padding(
                   padding: EdgeInsets.all(20), // Adjust the padding to increase the reaction area
-                  child: Text('JOIN NOW',
+                  child: Text('Registrarse',
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.black,

@@ -6,6 +6,7 @@ import '../controllers/auth_controller.dart';
 import '../controllers/local_controller.dart';
 import '../controllers/user_controller.dart';
 import 'inventory_page.dart';
+import 'login_page.dart';
 import 'store_page.dart';
 import 'calendar_page.dart';
 
@@ -216,7 +217,10 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   ),
-                  onTap: () {authControl.logout();},
+                  onTap: () {
+                    authControl.logout();
+                    Get.offAll(const LoginPage());
+                  },
                 ),
               ],
             ),
