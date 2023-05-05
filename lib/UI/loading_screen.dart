@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'firebase_central.dart';
-import 'package:linkedin_login/linkedin_login.dart';
-import 'pages/authselect_page.dart';
-import 'pages/conociendote_page.dart';
-import 'pages/login_page.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -18,11 +14,9 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
-// ignore: todo
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
       Get.off(() => const FirebaseCentral());
-      //Get.off(const Conociendote());
     });
   }
 

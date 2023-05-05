@@ -27,6 +27,7 @@ class _FilterState extends State<Filter> {
       widget.callback(widget.locales);
     }
   }
+  // ignore: unused_field
   String _search = '';
 
   void setSearch(String search) {

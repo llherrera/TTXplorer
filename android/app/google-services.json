@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "874965142590",
+    "firebase_url": "https://titixplorerdb-default-rtdb.firebaseio.com",
+    "project_id": "titixplorerdb",
+    "storage_bucket": "titixplorerdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874965142590:android:abb3e1894ba86b2c8a956f",
+        "android_client_info": {
+          "package_name": "com.example.ttxplorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874965142590-sae420oa7g7tbjlnl8mtgmbjfsb9212t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8kQa6ANmXmpL0DVJOzvK0jzONO0LgnFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874965142590-sae420oa7g7tbjlnl8mtgmbjfsb9212t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "874965142590-c57ms1m2englqj9pva4q1rqrg1b0qv0u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ttxplorer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

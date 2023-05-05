@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ttxplorer/ui/controllers/local_controller.dart';
 import 'user_controller.dart';
 
 class AuthenticationController extends GetxController {
@@ -17,11 +15,24 @@ class AuthenticationController extends GetxController {
       
       return Future.value();
     } on FirebaseAuthException catch (e) {
+      String error = '';
       if (e.code == 'user-not-found') {
-        return Future.error("User not found");
+        error = 'Usuario no encontrado';
       } else if (e.code == 'wrong-password') {
-        return Future.error("Wrong password");
+        error = 'Contraseña incorrecta';
       }
+      return Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(error),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {Get.back();},
+              child: const Text('OK'),
+            )
+          ],
+        )
+      );
     }
   }
 
@@ -35,11 +46,24 @@ class AuthenticationController extends GetxController {
       await userController.createUser(name, email, password, userCredential.user!.uid);
       return Future.value();
     } on FirebaseAuthException catch (e) {
+      String error = '';
       if (e.code == 'weak-password') {
-        return Future.error("The password is too weak");
+        error = 'La contraseña es muy debil';
       } else if (e.code == 'email-already-in-use') {
-        return Future.error("The email is taken");
+        error = 'El email ya esta en uso';
       }
+      return Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(error),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {Get.back();},
+              child: const Text('OK'),
+            )
+          ],
+        )
+      );
     }
   }
 
@@ -47,7 +71,18 @@ class AuthenticationController extends GetxController {
     try {
       await FirebaseAuth.instance.signOut();
     } catch (e) {
-      return Future.error("Logout error");
+      return Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Error al cerrar sesion'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {Get.back();},
+              child: const Text('OK'),
+            )
+          ],
+        )
+      );
     }
   }
 

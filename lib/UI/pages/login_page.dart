@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart'; // Add this line to import the Lottie package
 import '../../widgets/login_form.dart';
 
 class LoginPage extends StatelessWidget {

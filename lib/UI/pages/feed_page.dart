@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:ttxplorer/ui/pages/place_description.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -21,7 +19,7 @@ class FeedPage extends StatelessWidget {
             children: <Widget>[
               Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  color: Color(0xFF38005F),
+                  color: const Color(0xFF38005F),
                   child: Row(
                     children: <Widget>[
                       const Spacer(flex: 1),

@@ -9,7 +9,6 @@ import 'ui/pages/avatarchoice_page.dart';
 import 'ui/loading_screen.dart';
 import 'ui/pages/login_page.dart';
 import 'config/configuration.dart';
-import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

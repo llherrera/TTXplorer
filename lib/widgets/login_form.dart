@@ -1,10 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-
 import '../ui/controllers/auth_controller.dart';
 import '../ui/pages/signup_page.dart';
-import '../ui/pages/home_page.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final AuthenticationController authControl = Get.find();
   
+  // ignore: prefer_final_fields, unused_field
   bool _keepMeLoggedIn = false;
   String _password = '';
   String _email = '';
@@ -73,9 +75,7 @@ class _LoginFormState extends State<LoginForm> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {
-                    // TODO: Handle forgot password
-                  },
+                  onPressed: () {},
                   child: const Text('¿Has olvidado la contraseña?',
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                 ),
@@ -117,49 +117,29 @@ class _LoginFormState extends State<LoginForm> {
                 ],
               ),
               const SizedBox(height: 50),
-              /*Row(
-                children: [
-                  Checkbox(
-                    value: _keepMeLoggedIn,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _keepMeLoggedIn = value ?? false;
-                      });
-                      // TODO: Handle keep me logged in
-                    },
-                  ),
-                  const Text(
-                    'Keep me logged in',
-                    style: TextStyle(fontSize: 13, color: Colors.black),
-                  ),
-                ],
-              ),*/
               SizedBox(
                 width: 200,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF713D8F) // Set the button color
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF713D8F)),
                   child: const Text('Iniciar sesion', style: TextStyle(fontSize: 15)),
                   onPressed: () async {
                     if (_email.isNotEmpty || _password.isNotEmpty) {
                       login(_email, _password);
                       //Get.off(const HomePage());
                     }else {
-                      return showDialog<void> (
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) =>
+                      return Get.dialog(
                         AlertDialog(
                           title: const Text('Error'),
                           content: const Text('Por favor rellenar todos los campos'),
-                          actions: <Widget>[
+                          actions: [
                             TextButton(
-                              onPressed: () {Get.back();},
+                              onPressed: () {
+                                Get.back();
+                              },
                               child: const Text('OK'),
-                            )
+                            ),
                           ],
-                        )
+                        ),
                       );
                     }
                   },
@@ -168,13 +148,13 @@ class _LoginFormState extends State<LoginForm> {
               const Text('O'),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide.none, // Make the border invisible
+                  side: BorderSide.none,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
                   ),
                 ),
                 child: const Padding(
-                  padding: EdgeInsets.all(20), // Adjust the padding to increase the reaction area
+                  padding: EdgeInsets.all(20),
                   child: Text('Registrarse',
                     style: TextStyle(
                       fontSize: 13,
@@ -183,9 +163,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  Get.off(const SignupPage());
-                },
+                onPressed: () {Get.off(const SignupPage());},
               )
             ],
           ),

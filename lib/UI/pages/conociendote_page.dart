@@ -52,8 +52,7 @@ class _ConociendoteState extends State<Conociendote> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -62,10 +61,8 @@ class _ConociendoteState extends State<Conociendote> {
                       borderRadius: BorderRadius.circular(10),
                       color: const Color(0xFF713D8F),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 20),
-                    child: const Text(
-                      'Conociendote',
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    child: const Text('Conociendote',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,
@@ -80,8 +77,7 @@ class _ConociendoteState extends State<Conociendote> {
                     borderRadius: BorderRadius.circular(20),
                     color: const Color(0xFF713D8F),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -92,8 +88,7 @@ class _ConociendoteState extends State<Conociendote> {
                           children: [
                             Text(
                               '${i + 1}. ${_questions[i]['question']}',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 15),
+                              style: const TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 15),
                             ),
                             const SizedBox(height: 10),
                             for (int j = 0;
@@ -124,13 +119,9 @@ class _ConociendoteState extends State<Conociendote> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF38005F)),
-                        onPressed: () {
-                          Get.off(const AvatarChoicePage());
-                        },
-                        child: const Text(
-                          'Avatar',
+                        style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF38005F)),
+                        onPressed: () {Get.off(const AvatarChoicePage());},
+                        child: const Text('Avatar',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -138,11 +129,8 @@ class _ConociendoteState extends State<Conociendote> {
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Color(0xFF38005F)),
                         ),
-                        onPressed: () {
-                          Get.off(const HomePage());
-                        },
-                        child: const Text(
-                          'Saltar',
+                        onPressed: () {Get.off(const HomePage());},
+                        child: const Text('Omitir',
                           style: TextStyle(color: Color(0xFF38005F)),
                         ),
                       ),

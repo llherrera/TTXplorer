@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class AvatarChoicePage extends StatefulWidget {
   const AvatarChoicePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AvatarChoicePageState createState() => _AvatarChoicePageState();
 }
 
@@ -36,11 +36,9 @@ class _AvatarChoicePageState extends State<AvatarChoicePage> {
         body: Stack(
           children: [
             Positioned(
-              top: 0,
-              right: 0,
+              top: 0, right: 0,
               child: ColorFiltered(
-                colorFilter:
-                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                colorFilter:const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 child: Lottie.asset(
                   'assets/images/swipe.json',
                   alignment: Alignment.topRight,
@@ -59,11 +57,9 @@ class _AvatarChoicePageState extends State<AvatarChoicePage> {
                 CarouselSlider.builder(
                   itemCount: _avatarImages.length,
                   itemBuilder: (context, index, _) {
-                    return Container(
-                      child: Image.asset(
-                        _avatarImages[index],
-                        fit: BoxFit.cover,
-                      ),
+                    return Image.asset(
+                      _avatarImages[index],
+                      fit: BoxFit.cover,
                     );
                   },
                   options: CarouselOptions(
@@ -94,8 +90,7 @@ class _AvatarChoicePageState extends State<AvatarChoicePage> {
                   child: ElevatedButton(
                     onPressed: () => _onAvatarSelected(context),
                     child: const Text('Continue',
-                        style:
-                            TextStyle(fontFamily: 'RobotoSlab', fontSize: 20)),
+                      style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 20)),
                   ),
                 ),
               ],

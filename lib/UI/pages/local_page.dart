@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../../Data/model/local_model.dart';
-import '../../widgets/mision_button.dart';
 
 // ignore: must_be_immutable
 class LocalPage extends StatefulWidget {
@@ -109,7 +107,7 @@ class _LocalPageState extends State<LocalPage> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFF07B2B)),
+                          backgroundColor: const Color(0xFFF07B2B)),
                       onPressed: () {},
                       child: const Text(
                         'Iniciar misión',

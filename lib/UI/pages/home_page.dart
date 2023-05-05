@@ -14,7 +14,6 @@ import '../../Data/model/local_model.dart';
 import '../../widgets/filter_widget.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/local_controller.dart';
-import './place_description.dart';
 import './feed_page.dart';
 import './profile_page.dart';
 import './local_page.dart';
@@ -198,7 +197,6 @@ class _HomeState extends State<Home> {
   StreamSubscription<Position>? positionStream;
 
   void _getCurrentLocation() async {
-    //localControl.initializeLocales();
     final position = await _determinatePosition();
     setState(() {
       _currentPosition = position;
@@ -266,10 +264,7 @@ class _HomeState extends State<Home> {
     double destLat2 = _currentPosition.latitude;
     double destLng2 = _currentPosition.longitude;
 
-    // Calcular la distancia entre la ubicación actual del usuario y la ubicación de destino utilizando la fórmula Haversine
-    double distance = Geolocator.distanceBetween(
-        destLat1, destLng1, destLat2, destLng2);
-
+    double distance = Geolocator.distanceBetween(destLat1, destLng1, destLat2, destLng2);
     return distance;
   }
 

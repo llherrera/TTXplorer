@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'feed_page.dart';
 
 import '../../Data/model/local_model.dart';
 
@@ -109,7 +107,7 @@ class _PlaceDescriptionState extends State<PlaceDescription> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFF07B2B)),
+                          backgroundColor: const Color(0xFFF07B2B)),
                       onPressed: () {},
                       child: const Text(
                         'Iniciar misión',
