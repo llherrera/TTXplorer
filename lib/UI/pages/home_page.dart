@@ -118,7 +118,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     getLocales();
-    
+
     positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
         (Position? position) {
           if (position != null) {
@@ -170,7 +170,7 @@ class _HomeState extends State<Home> {
             snippet: locall.localDescription,
           ),
           onTap: () {
-            Get.to(LocalPage(local: locall));
+            Get.to(LocalPage(local: locall, callback: setLocales,));
           },
           icon: locall.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/cereza_icon.png') : 
                (locall.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/semillas_icon.png') : 
@@ -256,11 +256,11 @@ class _HomeState extends State<Home> {
   }
 
   double checkProximityMission() {
-    if (voidLocales.isEmpty) return 51.0;
-    localDest = voidLocales.elementAt(0);
+//    if (localControl.localDest.value.localName == 'localName') return 51.0;
+//    localDest = voidLocales.elementAt(0);
 
-    double destLat1 = localDest!.ubi.latitude;
-    double destLng1 = localDest!.ubi.longitude;
+    double destLat1 = localControl.localDest.value.ubi.latitude;
+    double destLng1 = localControl.localDest.value.ubi.longitude;
     double destLat2 = _currentPosition.latitude;
     double destLng2 = _currentPosition.longitude;
 

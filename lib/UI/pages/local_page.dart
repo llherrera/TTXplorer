@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../Data/model/local.dart';
+import '../controllers/local_controller.dart';
 
 // ignore: must_be_immutable
 class LocalPage extends StatefulWidget {
-  LocalPage({super.key, required this.local});
+  LocalPage({super.key, required this.local, required this.callback});
   LocalB local;
+  Function(Iterable<LocalB>) callback;
 
   @override
   State<LocalPage> createState() => _LocalPageState();
 }
 
 class _LocalPageState extends State<LocalPage> {
+  LocalController localControl = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.close_outlined),
-        backgroundColor: Colors.transparent,
-      ),
       body: Stack(
         children: [
           Image.asset(
@@ -28,11 +29,28 @@ class _LocalPageState extends State<LocalPage> {
           ),
           Column(
             children: [
+              Container(
+                margin: const EdgeInsets.only(top: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {Get.back();},
+                      icon: const Icon(
+                        Icons.close_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
+                    color: Colors.white,
                   ),
                   child: Center(
                     child: ClipRRect(
@@ -43,12 +61,6 @@ class _LocalPageState extends State<LocalPage> {
                         height: 250,
                         fit: BoxFit.cover,
                       ),
-                       /*Image.asset(
-                        'assets/images/place_pic.png',
-                        width: 350,
-                        height: 250,
-                        fit: BoxFit.cover,
-                      ),*/
                     ),
                   ),
                 ),
@@ -118,7 +130,11 @@ class _LocalPageState extends State<LocalPage> {
                         'Iniciar misión',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        localControl.setLocalDest(widget.local);
+                        widget.callback([widget.local]);
+                        Get.back();
+                      },
                     ),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(

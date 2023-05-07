@@ -9,6 +9,10 @@ class LocalController extends GetxController {
   // ignore: prefer_final_fields
   var _locales = <LocalB>[].obs;
 
+  // ignore: prefer_const_constructors
+  var localDest = LocalB('localName', 'localDescription', 'localImage', 'type', LatLng(0, 0), 'uid').obs;
+  RxList markerLocales = [].obs;
+
   final databaseRef = FirebaseDatabase.instance.ref();
 
   late StreamSubscription<DatabaseEvent> newEntryStreamSubscription;
@@ -114,4 +118,9 @@ class LocalController extends GetxController {
     });
     return locales;
   }
+
+  void setLocalDest(LocalB dest) {
+    localDest.value = dest;
+  }
+
 }
