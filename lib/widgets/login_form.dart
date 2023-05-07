@@ -1,16 +1,15 @@
-// ignore_for_file: library_private_types_in_public_api
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import '../ui/controllers/auth_controller.dart';
+import '../ui/pages/home_page.dart';
 import '../ui/pages/signup_page.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginFormState createState() => _LoginFormState();
 }
 
@@ -22,8 +21,8 @@ class _LoginFormState extends State<LoginForm> {
   String _password = '';
   String _email = '';
 
-  void login(String usern, passw) {
-    authControl.login(usern, passw);
+  Future<void> login(String usern, passw) async {
+    await authControl.login(usern, passw);
   }
 
   @override
@@ -124,7 +123,7 @@ class _LoginFormState extends State<LoginForm> {
                   child: const Text('Iniciar sesion', style: TextStyle(fontSize: 15)),
                   onPressed: () async {
                     if (_email.isNotEmpty || _password.isNotEmpty) {
-                      login(_email, _password);
+                      await login(_email, _password);
                       //Get.off(const HomePage());
                     }else {
                       return Get.dialog(

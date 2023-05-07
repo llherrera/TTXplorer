@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-
-import '../Data/model/local_model.dart';
+import '../Data/model/local.dart';
 
 // ignore: must_be_immutable
 class Filter extends StatefulWidget {
   Filter({super.key, required this.locales, required this.callback});
-  Iterable<Local> locales;
-  Function(Iterable<Local>) callback;
+  Iterable<LocalB> locales;
+  Function(Iterable<LocalB>) callback;
 
   @override
   State<Filter> createState() => _FilterState();
@@ -21,7 +20,7 @@ class _FilterState extends State<Filter> {
 
   void filterBy(String filter) {
     if (filter != 'void') {
-      widget.locales = widget.locales.where((Local local) => local.type == filter);
+      widget.locales = widget.locales.where((LocalB local) => local.type == filter);
       widget.callback(widget.locales);
     } else {
       widget.callback(widget.locales);

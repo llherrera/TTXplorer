@@ -6,9 +6,9 @@ class Local {
   int i = genId++;
   String localName;
   String localDescription;
-  File localImage;
+  String localUrl;
   String type;
   LatLng ubi;
 
-  Local(this.localName, this.localDescription, this.localImage, this.type, this.ubi);
+  Local(this.localName, this.localDescription, this.localUrl, this.type, this.ubi);
 }

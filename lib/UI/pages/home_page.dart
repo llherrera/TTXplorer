@@ -10,7 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ttxplorer/ui/controllers/user_controller.dart';
-import '../../Data/model/local_model.dart';
+import '../../Data/model/local.dart';
 import '../../widgets/filter_widget.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/local_controller.dart';
@@ -109,21 +109,16 @@ class _HomeState extends State<Home> {
   Set<Marker> markerLocales = {};
   late String mapStyle;
   
-  Iterable<Local> locales = [// Cuando este la db este iterable estará vacio, y se llamará la función getLocales en el init para traer la información
-    Local('buenavista','ta bueno', File('') , 'semilla', const LatLng(11.01488064038962, -74.82745006489434)),
-    Local('caiman del rio','ta bueno', File(''), 'fruta', const LatLng(11.023429370880141, -74.79637497469237)),
-    Local('plaza de la paz','ta bueno', File(''), 'insecto', const LatLng(10.988428922594359, -74.7892494693815)),
-  ];
-  Iterable<Local> voidLocales = [];//aqui estarán los locales filtrados, es para no perder información
+  Iterable<LocalB> locales = [];
+  Iterable<LocalB> voidLocales = [];
 
-  Local? localDest;
+  LocalB? localDest;
 
   @override
   void initState() {
     super.initState();
     getLocales();
-    setLocales(voidLocales);
-
+    
     positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
         (Position? position) {
           if (position != null) {
@@ -131,7 +126,7 @@ class _HomeState extends State<Home> {
             _mapController.animateCamera(CameraUpdate.newCameraPosition(
               CameraPosition(
                 target: LatLng(position.latitude, position.longitude),
-                zoom: 12.0,
+                zoom: 15.0,
               ),
             ));
           }
@@ -155,16 +150,20 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void getLocales() {
-    voidLocales = locales;
+  Future<void> getLocales() async {
+    locales = await localControl.getLocales();
+    setState(() {
+      voidLocales = locales;
+    });
+    await setLocales(voidLocales);
   }
 
-  void setLocales(Iterable<Local> voidLocales) async {// de los locales extrae la información para colocarlos en el mapa
+  Future<void> setLocales(Iterable<LocalB> voidLocales) async {
     markerLocales = {};
     for (var locall in voidLocales) {
       markerLocales.add(
         Marker(
-          markerId: MarkerId(locall.i.toString()),
+          markerId: MarkerId(locall.localName),
           position: locall.ubi,
           infoWindow: InfoWindow(
             title: locall.localName,
@@ -248,7 +247,7 @@ class _HomeState extends State<Home> {
       },
       initialCameraPosition: CameraPosition(
         target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-        zoom: 12,
+        zoom: 15,
       ),
       zoomControlsEnabled: false,
       mapType: MapType.normal,
@@ -257,7 +256,8 @@ class _HomeState extends State<Home> {
   }
 
   double checkProximityMission() {
-    localDest = locales.elementAt(0);
+    if (voidLocales.isEmpty) return 51.0;
+    localDest = voidLocales.elementAt(0);
 
     double destLat1 = localDest!.ubi.latitude;
     double destLng1 = localDest!.ubi.longitude;

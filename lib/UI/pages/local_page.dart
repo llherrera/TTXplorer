@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../Data/model/local_model.dart';
+import '../../Data/model/local.dart';
 
 // ignore: must_be_immutable
 class LocalPage extends StatefulWidget {
   LocalPage({super.key, required this.local});
-  Local local;
+  LocalB local;
 
   @override
   State<LocalPage> createState() => _LocalPageState();
@@ -37,12 +37,18 @@ class _LocalPageState extends State<LocalPage> {
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/images/place_pic.png',
+                      child: Image.network(
+                        widget.local.localImageURL,
                         width: 350,
                         height: 250,
                         fit: BoxFit.cover,
                       ),
+                       /*Image.asset(
+                        'assets/images/place_pic.png',
+                        width: 350,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      ),*/
                     ),
                   ),
                 ),
@@ -52,19 +58,19 @@ class _LocalPageState extends State<LocalPage> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Titulo del lugar',
-                      style: TextStyle(
+                      widget.local.localName,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                         color: Color(0xFF38005F),
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
-                      'Descripción del lugar',
-                      style: TextStyle(
+                      widget.local.localDescription,
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
@@ -108,21 +114,21 @@ class _LocalPageState extends State<LocalPage> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF07B2B)),
-                      onPressed: () {},
                       child: const Text(
                         'Iniciar misión',
                         style: TextStyle(color: Colors.white),
                       ),
+                      onPressed: () {},
                     ),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Color(0xFFF07B2B)),
                       ),
-                      onPressed: () {},
                       child: const Text(
                         'Programar misión',
                         style: TextStyle(color: Color(0xFFF07B2B)),
                       ),
+                      onPressed: () {},
                     ),
                   ],
                 ),

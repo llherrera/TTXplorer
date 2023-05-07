@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../Data/model/local.dart';
 import 'auth_controller.dart';
 
@@ -63,10 +64,54 @@ class LocalController extends GetxController {
                 'type': type,
                 'ubi': ubi,
                 'uid': uid});
-    } catch (e) {
-      // ignore: avoid_print
-      print(e);
-      return Future.error(e);
+    } catch (error) {
+      return Future.error(error);
     }
+  }
+
+  Future<LocalB> getLocal(uid) async {
+    try {
+      late LocalB b;
+      final snapshot = await databaseRef.child('localList/$uid').get();
+      if (snapshot.isBlank != true) {
+        //print('asdsd '+snapshot.value.toString());
+        final json = snapshot.value as Map<dynamic, dynamic>;
+        List<String> coordsList = json["ubi"].replaceAll('[','').replaceAll(']','').split(',');
+        LatLng latLng = LatLng(double.parse(coordsList[0]), double.parse(coordsList[1])); 
+        b = LocalB(
+          json["localName"] ?? 'localName',
+          json["localDescription"] ?? 'localDescription',
+          json["localImageURL"] ?? 'localImage',
+          json["type"] ?? 'type',
+          latLng,
+          json["uid"] ?? 'uid',
+        );
+      }
+      return b;
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  Future<List<LocalB>> getLocales() async {
+    List<LocalB> locales = [];
+    final ref = databaseRef.child('localList');
+    await ref.once().then((aaaa) {
+          final values = aaaa.snapshot.value as Map<dynamic, dynamic>;
+          values.forEach((key, values) {
+            final json = values as Map<dynamic, dynamic>;
+            List<String> coordsList = json["ubi"].replaceAll('[','').replaceAll(']','').split(',');
+            LatLng latLng = LatLng(double.parse(coordsList[0]), double.parse(coordsList[1])); 
+            locales.add(LocalB(
+              json["localName"] ?? 'localName',
+              json["localDescription"] ?? 'localDescription',
+              json["localImageURL"] ?? 'localImage',
+              json["type"] ?? 'type',
+              latLng,
+              json["uid"] ?? 'uid',
+            ));
+          });
+    });
+    return locales;
   }
 }
