@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:ttxplorer/UI/pages/home_page.dart';
 
 class AvatarChoicePage extends StatefulWidget {
   const AvatarChoicePage({super.key});
@@ -20,12 +22,6 @@ class _AvatarChoicePageState extends State<AvatarChoicePage> {
     'assets/images/avatar4.png',
     // more avatars here
   ];
-
-  void _onAvatarSelected(BuildContext context) {
-    // Save the selected avatar using your preferred method (e.g. Provider, Bloc, etc.)
-    // Then navigate to the login page
-    Navigator.of(context).pushReplacementNamed('/login');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +84,7 @@ class _AvatarChoicePageState extends State<AvatarChoicePage> {
                 SizedBox(
                   width: 180,
                   child: ElevatedButton(
-                    onPressed: () => _onAvatarSelected(context),
+                    onPressed: () => Get.off(const HomePage()),
                     child: const Text('Continue',
                       style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 20)),
                   ),

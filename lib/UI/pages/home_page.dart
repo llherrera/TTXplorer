@@ -301,7 +301,7 @@ class _HomeState extends State<Home> {
             Flexible(flex: 2, child: Filter(locales: voidLocales, callback: setLocales))
           ],
         ),
-        if (checkProximityMission() < 50.0) ...[
+        if (checkProximityMission() < 100.0) ...[
           Positioned(top: 0, left: 0, right: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
