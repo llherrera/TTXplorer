@@ -283,7 +283,7 @@ class _HomeState extends State<Home> {
     });
     String urlPhoto = await uploadImageF(File(pickedFile!.path), 'fotos');
     await localControl.setPhoto(urlPhoto);
-    
+    await userControl.setPhoto(urlPhoto, authControl.getUid());
     localControl.resetLocalDest();
     setLocales([]);
   }

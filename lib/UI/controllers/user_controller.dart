@@ -67,4 +67,26 @@ class UserController extends GetxController {
       return Future.error(error);
     }
   }
+
+  Future<void> setPhoto(url, user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        try {
+          List<String> photos = List.from(values['photosLocales']);
+          photos.add(url);
+          ref.child(key).update({
+            'photosLocales': photos
+          });
+        } catch (e) {
+          ref.child(key).update({
+            'photosLocales': [url]
+          });
+        }
+      });
+    });
+  }
+
 }
