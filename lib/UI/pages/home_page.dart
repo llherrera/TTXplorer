@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ttxplorer/services/upload_image.dart';
 import 'package:ttxplorer/ui/controllers/user_controller.dart';
 import '../../Data/model/local.dart';
 import '../../widgets/filter_widget.dart';
@@ -141,6 +142,7 @@ class _HomeState extends State<Home> {
 
   bool quest = false;
   final picker = ImagePicker();
+  XFile? _image;
   // ignore: unused_field
   String _search = '';
 
@@ -159,6 +161,9 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> setLocales(Iterable<LocalB> voidLocales) async {
+    if (voidLocales.isEmpty) {
+      voidLocales = locales;
+    }
     markerLocales = {};
     for (var locall in voidLocales) {
       markerLocales.add(
@@ -269,7 +274,18 @@ class _HomeState extends State<Home> {
   }
 
   void camara() async {
-    await picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = pickedFile;
+      }
+    });
+    String urlPhoto = await uploadImageF(File(pickedFile!.path), 'fotos');
+    await localControl.setPhoto(urlPhoto);
+    
+    localControl.resetLocalDest();
+    setLocales([]);
   }
 
   @override

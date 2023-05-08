@@ -2,6 +2,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ttxplorer/services/upload_image.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/local_controller.dart';
 import '../controllers/user_controller.dart';
@@ -27,20 +28,22 @@ class _ProfileState extends State<Profile> {
   File? _image;
   final picker = ImagePicker();
 
-  Future getImage() async {
+  void getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-      } else {}
+      }
     });
+    //await uploadImageF(File(pickedFile!.path), 'usuario');
+    await uploadImageF(File(pickedFile!.path), 'usuario');
   }
 
   Future<List<String>> _searchImages(String term) async {
     await Future.delayed(const Duration(seconds: 1));
     return List.generate(
-        20, (index) => 'https://source.unsplash.com/random/800x800/?$term');
+        19, (index) => 'https://source.unsplash.com/random/800x800/?$term');
   }
 
   @override
@@ -291,7 +294,7 @@ class _ProfileState extends State<Profile> {
           return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return Image.network(

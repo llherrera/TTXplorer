@@ -21,8 +21,8 @@ class _LoginFormState extends State<LoginForm> {
   String _password = '';
   String _email = '';
 
-  Future<void> login(String usern, passw) async {
-    await authControl.login(usern, passw);
+  void login(String usern, passw) {
+    authControl.login(usern, passw);
   }
 
   @override
@@ -121,20 +121,18 @@ class _LoginFormState extends State<LoginForm> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF713D8F)),
                   child: const Text('Iniciar sesion', style: TextStyle(fontSize: 15)),
-                  onPressed: () async {
+                  onPressed: () {
                     if (_email.isNotEmpty || _password.isNotEmpty) {
-                      await login(_email, _password);
+                      login(_email, _password);
                       //Get.off(const HomePage());
                     }else {
-                      return Get.dialog(
+                      Get.dialog(
                         AlertDialog(
                           title: const Text('Error'),
                           content: const Text('Por favor rellenar todos los campos'),
                           actions: [
                             TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
+                              onPressed: () => Get.back(),
                               child: const Text('OK'),
                             ),
                           ],

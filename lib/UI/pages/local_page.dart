@@ -126,13 +126,20 @@ class _LocalPageState extends State<LocalPage> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF07B2B)),
-                      child: const Text(
+                      child: Text(
+                        localControl.localDest.value == widget.local ?
+                        'Cancelar misión' :
                         'Iniciar misión',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        localControl.setLocalDest(widget.local);
-                        widget.callback([widget.local]);
+                        if (localControl.localDest.value == widget.local) {
+                          localControl.resetLocalDest();
+                          widget.callback([]);
+                        } else {
+                          localControl.setLocalDest(widget.local);
+                          widget.callback([widget.local]);
+                        }
                         Get.back();
                       },
                     ),

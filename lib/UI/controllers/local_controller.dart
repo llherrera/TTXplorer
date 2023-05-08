@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../Data/model/local.dart';
@@ -122,5 +123,34 @@ class LocalController extends GetxController {
   void setLocalDest(LocalB dest) {
     localDest.value = dest;
   }
+  void resetLocalDest() {
+    // ignore: prefer_const_constructors
+    localDest.value = LocalB('localName', 'localDescription', 'localImage', 'type', LatLng(0, 0), 'uid');
+  }
+
+  Future<void> setPhoto(url) async {
+    final ref = databaseRef.child('localList');
+    Query query = ref.orderByChild('localName').equalTo(localDest.value.localName);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        final json = values as Map<dynamic, dynamic>;
+        if(json["localName"] == localDest.value.localName){
+          try{
+            List<String> photos = List<String>.from(json['photosReview']);
+            //Get.dialog(AlertDialog(content: Text('fallo1'),));
+            photos.add(url);
+            ref.child(key).update({
+              'photosReview': photos
+            });
+          } catch (e) {
+            ref.child(key).update({
+              'photosReview': [url]
+            });
+          }
+        }
+      });
+    });
+  } 
 
 }
