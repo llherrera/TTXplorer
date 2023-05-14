@@ -8,6 +8,7 @@ class User {
   String? avatar;
   String password;
   String uid;
+  List<int> rewards = [0,0,0];
   File? photo;
 
   User(this.name, this.email, this.password, this.uid);
@@ -18,7 +19,8 @@ class User {
     email = json["email"] ?? 'email',
     avatar = json["avatar"] ?? 'avatar',
     password = json["password"] ?? 'password',
-    uid = json["uid"] ?? 'uid';
+    uid = json["uid"] ?? 'uid',
+    rewards = [0,0,0];
 
   toJson() {
     return {
@@ -27,6 +29,7 @@ class User {
       "avatar": avatar,
       "password": password,
       "uid": uid,
+      "rewards": rewards
     };
   }
 }

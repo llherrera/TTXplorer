@@ -22,7 +22,8 @@ class _ProfileFormState extends State<ProfileForm> {
       await userControl.updateName(para, authControl.getUid());
 
     } else {
-      await authControl.changePassword(para);
+      String currentPass = await userControl.getPassword(authControl.getUid());
+      await authControl.changePassword(para, currentPass);
       //await userControl.updatePassword(para, authControl.getUid());
     }
     //await authControl.signup(_username, _email, _password);

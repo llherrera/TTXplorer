@@ -31,11 +31,6 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    getRewards();
-  }
-
-  void getRewards() async {
-    await userControl.getRewards(authControl.getUid());
   }
 
   void getImage() async {
@@ -51,7 +46,8 @@ class _ProfileState extends State<Profile> {
     await userControl.updatePhoto(urlPhoto, authControl.getUid());
   }
 
-  Future<List<String>> _searchImages(String term) async {
+  Future<List<String>> _searchImages() async {
+    userControl.getRewards(authControl.getUid());
     await Future.delayed(const Duration(seconds: 1));
     return userControl.getPhotos(authControl.getUid());
   }
@@ -121,10 +117,13 @@ class _ProfileState extends State<Profile> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              // ignore: invalid_use_of_protected_member
                               Text('${userControl.rewards.value.elementAt(0)}', style: const TextStyle(fontSize: 20)),
                               const SizedBox(width: 40),
+                              // ignore: invalid_use_of_protected_member
                               Text('${userControl.rewards.value.elementAt(1)}', style: const TextStyle(fontSize: 20)),
                               const SizedBox(width: 40),
+                              // ignore: invalid_use_of_protected_member
                               Text('${userControl.rewards.value.elementAt(2)}', style: const TextStyle(fontSize: 20)),
                             ],
                           ),
@@ -324,7 +323,7 @@ class _ProfileState extends State<Profile> {
 
   Widget photos() {
     return FutureBuilder(
-      future: _searchImages('food'),
+      future: _searchImages(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -336,9 +335,24 @@ class _ProfileState extends State<Profile> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
-              return Image.network(
-                snapshot.data![snapshot.data!.length - 1 - index],
-                fit: BoxFit.cover,
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF38005F),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  )
+                ),
+                margin: const EdgeInsets.all(5),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: Image.network(
+                    snapshot.data![snapshot.data!.length - 1 - index],
+                    fit: BoxFit.cover,
+                  ),
+                ),
               );
             },
           );

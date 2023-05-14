@@ -149,13 +149,17 @@ class UserController extends GetxController {
     final ref = databaseRef.child('userList');
     Query query = ref.orderByChild('uid').equalTo(user);
     List<String> url = [];
-    await query.once().then((value) {
-      final values = value.snapshot.value as Map<dynamic, dynamic>;
-      values.forEach((key, values) {
-        url = List.from(values['photosLocales']);
+    try {
+      await query.once().then((value) {
+        final values = value.snapshot.value as Map<dynamic, dynamic>;
+        values.forEach((key, values) {
+          url = List.from(values['photosLocales']);
+        });
       });
-    });
-    return url;
+      return url;
+    } catch (e) {
+      return url;
+    }    
   }
 
   Future<void> updateName(name, user) async {
@@ -172,7 +176,6 @@ class UserController extends GetxController {
   }
 
   Future<void> updatePassword(password, user) async {
-    
     final ref = databaseRef.child('userList');
     Query query = ref.orderByChild('uid').equalTo(user);
     await query.once().then((value) {
@@ -180,6 +183,32 @@ class UserController extends GetxController {
       values.forEach((key, values) {
         ref.child(key).update({
           'password': password
+        });
+      });
+    });
+  }
+
+  Future<String> getPassword(user) {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    String password = '';
+    query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        password = values['password'];
+      });
+    });
+    return Future.value(password);
+  }
+
+  Future<void> setAvatar(user, uriAvatar) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'avatar': uriAvatar
         });
       });
     });

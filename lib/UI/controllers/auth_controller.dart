@@ -86,12 +86,18 @@ class AuthenticationController extends GetxController {
     }
   }
 
-  Future<void> changePassword(newPassword) async {
+  Future<void> changePassword(newPassword, currentPass) async {
     try {
-      await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
-      UserController userController = Get.find();
-      await userController.updatePassword(newPassword, getUid());
-
+      var user = FirebaseAuth.instance.currentUser!;
+      final cred = EmailAuthProvider.credential(email: user.email!, password: currentPass);
+      await user.reauthenticateWithCredential(cred).then((value) async {
+        await user.updatePassword(newPassword).then((_) {
+          UserController userController = Get.find();
+          userController.updatePassword(newPassword, getUid());
+        });
+      });
+      return Future.value();
+    // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       return Get.dialog(
         AlertDialog(
