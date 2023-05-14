@@ -3,11 +3,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import '../../Data/model/user.dart';
 import 'auth_controller.dart';
-import 'local_controller.dart';
 
 class UserController extends GetxController {
   // ignore: prefer_final_fields
   var _users = <User>[].obs;
+
+  var rewards = <int>[0,0,0].obs;
 
   final databaseRef = FirebaseDatabase.instance.ref();
   //LocalController localControl = Get.find();
@@ -101,6 +102,85 @@ class UserController extends GetxController {
             ]
           });
         }
+      });
+    });
+  }
+
+  Future<void> getRewards(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    List<int> rewards = [];
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        rewards = List.from(values['rewards']);
+      });
+    });
+    this.rewards.value = rewards;
+  }
+
+  Future<void> updatePhoto(url, user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'photoProfile': url
+        });
+      });
+    });
+  }
+
+  Future<String> getPhoto(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    String url = '';
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        url = values['photoProfile'];
+      });
+    });
+    return url;
+  }
+
+  Future<List<String>> getPhotos(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    List<String> url = [];
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        url = List.from(values['photosLocales']);
+      });
+    });
+    return url;
+  }
+
+  Future<void> updateName(name, user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'name': name
+        });
+      });
+    });
+  }
+
+  Future<void> updatePassword(password, user) async {
+    
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'password': password
+        });
       });
     });
   }

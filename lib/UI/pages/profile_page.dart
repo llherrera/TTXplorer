@@ -28,6 +28,16 @@ class _ProfileState extends State<Profile> {
   File? _image;
   final picker = ImagePicker();
 
+  @override
+  void initState() {
+    super.initState();
+    getRewards();
+  }
+
+  void getRewards() async {
+    await userControl.getRewards(authControl.getUid());
+  }
+
   void getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -37,13 +47,13 @@ class _ProfileState extends State<Profile> {
       }
     });
     //await uploadImageF(File(pickedFile!.path), 'usuario');
-    await uploadImageF(File(pickedFile!.path), 'usuario');
+    String urlPhoto = await uploadImageF(File(pickedFile!.path), 'usuario');
+    await userControl.updatePhoto(urlPhoto, authControl.getUid());
   }
 
   Future<List<String>> _searchImages(String term) async {
     await Future.delayed(const Duration(seconds: 1));
-    return List.generate(
-        19, (index) => 'https://source.unsplash.com/random/800x800/?$term');
+    return userControl.getPhotos(authControl.getUid());
   }
 
   @override
@@ -92,18 +102,32 @@ class _ProfileState extends State<Profile> {
                         left: MediaQuery.of(context).size.width * 0.58,
                         child: const CircleAvatar( backgroundColor: Color(0xFFB27CD1),)
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: (Image.asset('assets/icons/cereza_icon.png', color: Colors.black))),
-                          IconButton(
-                            onPressed: () {},
-                            icon: (Image.asset('assets/icons/semillas_icon.png', color: Colors.black))),
-                          IconButton(
-                            onPressed: () {},
-                            icon: (Image.asset('assets/icons/arana_icon.png', color: Colors.black)))
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: (Image.asset('assets/icons/cereza_icon.png', color: Colors.black))),
+                              IconButton(
+                                onPressed: () {},
+                                icon: (Image.asset('assets/icons/semillas_icon.png', color: Colors.black))),
+                              IconButton(
+                                onPressed: () {},
+                                icon: (Image.asset('assets/icons/arana_icon.png', color: Colors.black)))
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('${userControl.rewards.value.elementAt(0)}', style: const TextStyle(fontSize: 20)),
+                              const SizedBox(width: 40),
+                              Text('${userControl.rewards.value.elementAt(1)}', style: const TextStyle(fontSize: 20)),
+                              const SizedBox(width: 40),
+                              Text('${userControl.rewards.value.elementAt(2)}', style: const TextStyle(fontSize: 20)),
+                            ],
+                          ),
                         ],
                       ),
                     ],
@@ -194,7 +218,7 @@ class _ProfileState extends State<Profile> {
                     children: const [
                       Expanded(
                         child: Text(
-                          'Inventario',
+                          'Editar Avatar',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -208,7 +232,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
                   onTap: () {
-                    Get.to(const InventoryPage());
+                    Get.to(const StorePage());
                   },
                 ),
                 ListTile(
@@ -218,7 +242,7 @@ class _ProfileState extends State<Profile> {
                     children: const [
                       Expanded(
                         child: Text(
-                          'Tienda',
+                          'Editar Perfil',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -232,7 +256,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
                   onTap: () {
-                    Get.to(const StorePage());
+                    Get.to(const InventoryPage());
                   },
                 ),
                 const SizedBox(height: 150,),
@@ -313,7 +337,7 @@ class _ProfileState extends State<Profile> {
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return Image.network(
-                snapshot.data![index],
+                snapshot.data![snapshot.data!.length - 1 - index],
                 fit: BoxFit.cover,
               );
             },

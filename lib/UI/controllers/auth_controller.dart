@@ -86,6 +86,28 @@ class AuthenticationController extends GetxController {
     }
   }
 
+  Future<void> changePassword(newPassword) async {
+    try {
+      await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+      UserController userController = Get.find();
+      await userController.updatePassword(newPassword, getUid());
+
+    } on FirebaseAuthException catch (e) {
+      return Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Error al actualizar la contraseña'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {Get.back();},
+              child: const Text('OK'),
+            )
+          ],
+        )
+      );
+    }
+  }
+
   String userEmail() {
     String email = FirebaseAuth.instance.currentUser!.email ?? "a@a.com";
     return email;
