@@ -31,6 +31,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    _username = userControl.user.value.name;
   }
 
   void getImage() async {
@@ -54,7 +55,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    _username = authControl.userEmail();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF38005F),
@@ -336,14 +336,9 @@ class _ProfileState extends State<Profile> {
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xFF38005F),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  )
+                decoration: BoxDecoration(
+                  color: const Color(0xFF38005F),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 margin: const EdgeInsets.all(5),
                 child: ClipRRect(

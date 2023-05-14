@@ -9,6 +9,7 @@ class UserController extends GetxController {
   var _users = <User>[].obs;
 
   var rewards = <int>[0,0,0].obs;
+  var user = User('user','email@e.com','123456','0').obs;
 
   final databaseRef = FirebaseDatabase.instance.ref();
   //LocalController localControl = Get.find();
@@ -67,6 +68,19 @@ class UserController extends GetxController {
     } catch (error) {
       return Future.error(error);
     }
+  }
+
+  Future<User> getUser() async {
+    AuthenticationController authenticationController = Get.find();
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(authenticationController.getUid());
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        user.value = User.fromJson(value.snapshot, values);
+      });
+    });
+    return user.value;
   }
 
   Future<void> setPhoto(url, user, localDest) async {
@@ -212,6 +226,19 @@ class UserController extends GetxController {
         });
       });
     });
+  }
+
+  Future<String> getAvatar(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    String avatar = '';
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        avatar = values['avatar'];
+      });
+    });
+    return avatar;
   }
 
 }

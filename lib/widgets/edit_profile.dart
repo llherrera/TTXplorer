@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ttxplorer/ui/pages/home_page.dart';
 
 import '../ui/controllers/auth_controller.dart';
 import '../ui/controllers/user_controller.dart';
@@ -82,7 +83,8 @@ class _ProfileFormState extends State<ProfileForm> {
                       if (_username.isNotEmpty) {
                         try {
                           await update(true, _username);
-                          Get.back();
+                          userControl.user.value = await userControl.getUser();
+                          Get.off(const HomePage());
                         } catch (e) {
                           Get.dialog(
                             AlertDialog(
@@ -101,7 +103,8 @@ class _ProfileFormState extends State<ProfileForm> {
                       if (_password.isNotEmpty) {
                         try {
                           await update(false, _password);
-                          Get.back();
+                          userControl.user.value = await userControl.getUser();
+                          Get.off(const HomePage());
                         } catch (e) {
                           Get.dialog(
                             AlertDialog(

@@ -5,9 +5,9 @@ import '../controllers/local_controller.dart';
 
 // ignore: must_be_immutable
 class LocalPage extends StatefulWidget {
-  LocalPage({super.key, required this.local, required this.callback});
+  LocalPage({super.key, required this.local, this.callback});
   LocalB local;
-  Function(Iterable<LocalB>) callback;
+  Function(Iterable<LocalB>)? callback;
 
   @override
   State<LocalPage> createState() => _LocalPageState();
@@ -135,10 +135,10 @@ class _LocalPageState extends State<LocalPage> {
                       onPressed: () {
                         if (localControl.localDest.value == widget.local) {
                           localControl.resetLocalDest();
-                          widget.callback([]);
+                          widget.callback!([]);
                         } else {
                           localControl.setLocalDest(widget.local);
-                          widget.callback([widget.local]);
+                          widget.callback!([widget.local]);
                         }
                         Get.back();
                       },

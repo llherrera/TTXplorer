@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ttxplorer/ui/controllers/user_controller.dart';
 import 'package:ttxplorer/ui/pages/login_page.dart';
 import '../ui/controllers/auth_controller.dart';
 import '../ui/pages/conociendote_page.dart';
@@ -8,6 +9,7 @@ import '../ui/pages/conociendote_page.dart';
 class SignupForm extends StatelessWidget {
   SignupForm({Key? key}) : super(key: key);
   final AuthenticationController authControl = Get.find();
+  final UserController userControl = Get.find();
 
   String _username = '';
   String _password = '';
@@ -64,6 +66,7 @@ class SignupForm extends StatelessWidget {
                     if(_username.isNotEmpty || _email.isNotEmpty || _password.isNotEmpty) {
                       try {
                         await signIn();
+                        userControl.user.value = await userControl.getUser();
                         Get.off(() => const Conociendote());
                       } catch (e) {
                         Get.dialog(

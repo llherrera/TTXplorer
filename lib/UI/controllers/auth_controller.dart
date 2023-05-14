@@ -13,6 +13,9 @@ class AuthenticationController extends GetxController {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       
+      UserController userController = Get.find();
+      userController.user.value = await userController.getUser();
+
       return Future.value();
     } on FirebaseAuthException catch (e) {
       String error = '';
