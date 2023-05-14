@@ -13,7 +13,7 @@ class User {
   User(this.name, this.email, this.password, this.uid);
 
   User.fromJson(DataSnapshot snapshot, Map<dynamic, dynamic> json) :
-    key = snapshot.key ?? '0',
+    key = json["uid"] ?? '0',
     name = json["name"] ?? 'username',
     email = json["email"] ?? 'email',
     avatar = json["avatar"] ?? 'avatar',
@@ -29,6 +29,4 @@ class User {
       "uid": uid,
     };
   }
-
-  set setPhoto(File? photo) => this.photo = photo;
 }

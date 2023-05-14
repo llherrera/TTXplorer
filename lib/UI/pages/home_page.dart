@@ -142,6 +142,7 @@ class _HomeState extends State<Home> {
 
   bool quest = false;
   final picker = ImagePicker();
+  // ignore: unused_field
   XFile? _image;
   // ignore: unused_field
   String _search = '';
@@ -281,11 +282,13 @@ class _HomeState extends State<Home> {
         _image = pickedFile;
       }
     });
-    String urlPhoto = await uploadImageF(File(pickedFile!.path), 'fotos');
-    await localControl.setPhoto(urlPhoto);
-    await userControl.setPhoto(urlPhoto, authControl.getUid());
-    localControl.resetLocalDest();
-    setLocales([]);
+    if (pickedFile != null) {
+      String urlPhoto = await uploadImageF(File(pickedFile.path), 'fotos');
+      await localControl.setPhoto(urlPhoto);
+      await userControl.setPhoto(urlPhoto, authControl.getUid(), localControl.localDest.value);
+      localControl.resetLocalDest();
+      setLocales([]);
+    }
   }
 
   @override
@@ -301,7 +304,7 @@ class _HomeState extends State<Home> {
             Flexible(flex: 2, child: Filter(locales: voidLocales, callback: setLocales))
           ],
         ),
-        if (checkProximityMission() < 50.0) ...[
+        if (checkProximityMission() < 100.0) ...[
           Positioned(top: 0, left: 0, right: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),

@@ -12,8 +12,29 @@ class SignupPage extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
-            Center(
-              child: Column(
+            const Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(top: 40),
+                child: Text('Crear cuenta',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontFamily: 'RobotoSlab',
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 130,
+              left: 20,
+              right: 20,
+              child: SignupForm(),
+            )
+              
+              /*Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 50),
@@ -32,8 +53,8 @@ class SignupPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 100),
                 ],
-              ),
-            ),
+              ),*/
+            //),
             /*Positioned(
                 bottom: 0,
                 right: 180,

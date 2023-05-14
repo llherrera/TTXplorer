@@ -13,6 +13,7 @@ class LocalB {
   LocalB(this.localName, this.localDescription, this.localImageURL, this.type, this.ubi, this.uid);
 
   LocalB.fromJson(DataSnapshot snapshot, Map<dynamic, dynamic> json) :
+    key = json["localName"] ?? 'localName',
     localName = json["localName"] ?? 'localName',
     localDescription = json["localDescription"] ?? 'localDescription',
     localImageURL = json["localImage"] ?? 'localImage',

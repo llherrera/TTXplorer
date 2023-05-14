@@ -3,12 +3,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import '../../Data/model/user.dart';
 import 'auth_controller.dart';
+import 'local_controller.dart';
 
 class UserController extends GetxController {
   // ignore: prefer_final_fields
   var _users = <User>[].obs;
 
   final databaseRef = FirebaseDatabase.instance.ref();
+  //LocalController localControl = Get.find();
 
   late StreamSubscription<DatabaseEvent> newEntryStreamSubscription;
 
@@ -62,13 +64,11 @@ class UserController extends GetxController {
                 'password': password,
                 'uid': uid});
     } catch (error) {
-      // ignore: avoid_print
-      print(error);
       return Future.error(error);
     }
   }
 
-  Future<void> setPhoto(url, user) async {
+  Future<void> setPhoto(url, user, localDest) async {
     final ref = databaseRef.child('userList');
     Query query = ref.orderByChild('uid').equalTo(user);
     await query.once().then((value) {
@@ -83,6 +83,22 @@ class UserController extends GetxController {
         } catch (e) {
           ref.child(key).update({
             'photosLocales': [url]
+          });
+          
+        }
+        try {
+          List<int> rewards = List.from(values['rewards']);
+          rewards[localDest.type == 'fruta' ? 0 : localDest.type == 'semilla' ? 1 : 2] += 1;
+          ref.child(key).update({
+            'rewards': rewards
+          });
+        } catch (e) {
+          ref.child(key).update({
+            'rewards': [
+              localDest.type == 'fruta' ? 1 : 0,
+              localDest.type == 'semilla' ? 1 : 0,
+              localDest.type == 'insecto' ? 1 : 0
+            ]
           });
         }
       });

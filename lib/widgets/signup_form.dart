@@ -13,7 +13,7 @@ class SignupForm extends StatelessWidget {
   String _password = '';
   String _email = '';
 
-  void signIn() async {
+  Future<void> signIn() async {
     await authControl.signup(_username, _email, _password);
   }
 
@@ -62,13 +62,27 @@ class SignupForm extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     if(_username.isNotEmpty || _email.isNotEmpty || _password.isNotEmpty) {
-                      signIn();
-                      Get.off(() => const Conociendote());
+                      try {
+                        await signIn();
+                        Get.off(() => const Conociendote());
+                      } catch (e) {
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text('Error'),
+                            content: const Text('Por favor rellenar todos los campos'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {Get.back();},
+                                child: const Text('OK'),
+                              )
+                            ],
+                          )
+                        );
+                      }
+                      //await signIn();
+                      //Get.off(() => const Conociendote());
                     } else {
-                      return showDialog<void> (
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) =>
+                      Get.dialog(
                         AlertDialog(
                           title: const Text('Error'),
                           content: const Text('Por favor rellenar todos los campos'),
@@ -94,9 +108,7 @@ class SignupForm extends StatelessWidget {
               const SizedBox(height: 16),
               const Text('Ya tienes una cuenta?'),
               TextButton(
-                onPressed: () {
-                  Get.off(() => const LoginPage());
-                },
+                onPressed: () { Get.off(() => const LoginPage());},
                 child: const Text('Inicia Sesión', style: TextStyle(color: Colors.blue)),
               )
             ],

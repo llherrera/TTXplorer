@@ -21,8 +21,8 @@ class _LoginFormState extends State<LoginForm> {
   String _password = '';
   String _email = '';
 
-  void login(String usern, passw) {
-    authControl.login(usern, passw);
+  Future<void> login(String usern, passw) async {
+    await authControl.login(usern, passw);
   }
 
   @override
@@ -121,11 +121,29 @@ class _LoginFormState extends State<LoginForm> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF713D8F)),
                   child: const Text('Iniciar sesion', style: TextStyle(fontSize: 15)),
-                  onPressed: () {
-                    if (_email.isNotEmpty || _password.isNotEmpty) {
-                      login(_email, _password);
-                      //Get.off(const HomePage());
-                    }else {
+                  onPressed: () async {
+                    if (_email.isNotEmpty && _password.isNotEmpty) {
+                      try {
+                        await login(_email, _password);
+                        if (authControl.userEmail() == _email) {
+                          Get.off(const HomePage());
+                        }
+                        
+                      } catch (e) {
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text('Error'),
+                            content: const Text('Usuario o contraseña incorrectos'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Get.back(),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    } else {
                       Get.dialog(
                         AlertDialog(
                           title: const Text('Error'),

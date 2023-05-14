@@ -64,6 +64,7 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: <Widget>[
                   Container(
+                    padding: const EdgeInsets.only(bottom: 10),
                     decoration: const BoxDecoration(
                       color: Color(0xFF38005F),
                       borderRadius: BorderRadius.only(
@@ -74,7 +75,39 @@ class _ProfileState extends State<Profile> {
                     width: double.infinity,
                     child: photoLoad(),
                   ),
-                  const SizedBox(height: 20),
+                  Stack(
+                    children: [
+                      Positioned(
+                        top: 5,
+                        left: MediaQuery.of(context).size.width * 0.31,
+                        child: const CircleAvatar( backgroundColor: Color(0xFFB27CD1),)
+                      ),
+                      Positioned(
+                        top: 5,
+                        left: MediaQuery.of(context).size.width * 0.44,
+                        child: const CircleAvatar( backgroundColor: Color(0xFFB27CD1),)
+                      ),
+                      Positioned(
+                        top: 5,
+                        left: MediaQuery.of(context).size.width * 0.58,
+                        child: const CircleAvatar( backgroundColor: Color(0xFFB27CD1),)
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: (Image.asset('assets/icons/cereza_icon.png', color: Colors.black))),
+                          IconButton(
+                            onPressed: () {},
+                            icon: (Image.asset('assets/icons/semillas_icon.png', color: Colors.black))),
+                          IconButton(
+                            onPressed: () {},
+                            icon: (Image.asset('assets/icons/arana_icon.png', color: Colors.black)))
+                        ],
+                      ),
+                    ],
+                  ),
                   photos(),
                 ],
               ),
@@ -248,14 +281,7 @@ class _ProfileState extends State<Profile> {
             icon: _image == null ? 
                             const Icon(Icons.photo_camera, size: 70) :
                             ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
-            onPressed: () async {
-              final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-              if (pickedFile != null) {
-                setState(() {
-                  _image = File(pickedFile.path);
-                });
-              }
-            },
+            onPressed: getImage
           ),
         ),
         const SizedBox(
@@ -263,22 +289,11 @@ class _ProfileState extends State<Profile> {
         ),
         Container(
           decoration: const BoxDecoration(
-            color: Colors.grey,
+            color: Colors.transparent,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(_username.toString(), style: const TextStyle(fontSize: 20, color: Colors.black)),
+          child: Text(_username.toString(), style: const TextStyle(fontSize: 20, color: Colors.white)),
         ),
-        SizedBox(
-          width: 200,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-            ],
-          )
-        )
       ]
     );
   }
