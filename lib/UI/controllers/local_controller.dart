@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../Data/model/local.dart';
@@ -138,7 +137,6 @@ class LocalController extends GetxController {
         if(json["localName"] == localDest.value.localName){
           try{
             List<String> photos = List<String>.from(json['photosReview']);
-            //Get.dialog(AlertDialog(content: Text('fallo1'),));
             photos.add(url);
             ref.child(key).update({
               'photosReview': photos
@@ -152,5 +150,4 @@ class LocalController extends GetxController {
       });
     });
   } 
-
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ttxplorer/UI/pages/home_page.dart';
+import 'package:ttxplorer/ui/pages/home_page.dart';
+import '../controllers/auth_controller.dart';
+import '../controllers/user_controller.dart';
 
 class AvatarChoicePage extends StatefulWidget {
   const AvatarChoicePage({super.key});
@@ -14,12 +16,14 @@ class AvatarChoicePage extends StatefulWidget {
 
 class _AvatarChoicePageState extends State<AvatarChoicePage> {
   int _currentAvatar = 0;
+  AuthenticationController authControl = Get.find();
+  UserController userControl = Get.find();
 
   final List<String> _avatarImages = [
-    'assets/images/avatar1.png',
-    'assets/images/avatar2.png',
-    'assets/images/avatar3.png',
-    'assets/images/avatar4.png',
+    'https://firebasestorage.googleapis.com/v0/b/titixplorerdb.appspot.com/o/avatares%2Favatar1.png?alt=media&token=72dda27f-3e70-48a4-8f39-691555680e92',
+    'https://firebasestorage.googleapis.com/v0/b/titixplorerdb.appspot.com/o/avatares%2Favatar2.png?alt=media&token=30fe7dde-fdf3-4e89-914c-e626edcb489e',
+    'https://firebasestorage.googleapis.com/v0/b/titixplorerdb.appspot.com/o/avatares%2Favatar3.png?alt=media&token=83de4816-0ec4-4868-b39f-f49fe12a2cc6',
+    'https://firebasestorage.googleapis.com/v0/b/titixplorerdb.appspot.com/o/avatares%2Favatar4.png?alt=media&token=6d65b4e0-5d8c-49b0-adef-959a1057bad3',
     // more avatars here
   ];
 
@@ -47,16 +51,12 @@ class _AvatarChoicePageState extends State<AvatarChoicePage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('CHOOSE YOUR AVATAR',
-                    style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 28)),
+                const Text('CHOOSE YOUR AVATAR', style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 28)),
                 const SizedBox(height: 20),
                 CarouselSlider.builder(
                   itemCount: _avatarImages.length,
                   itemBuilder: (context, index, _) {
-                    return Image.asset(
-                      _avatarImages[index],
-                      fit: BoxFit.cover,
-                    );
+                    return Image.network(_avatarImages[index]);
                   },
                   options: CarouselOptions(
                     height: 300,
@@ -84,9 +84,11 @@ class _AvatarChoicePageState extends State<AvatarChoicePage> {
                 SizedBox(
                   width: 180,
                   child: ElevatedButton(
-                    onPressed: () => Get.off(const HomePage()),
-                    child: const Text('Continue',
-                      style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 20)),
+                    onPressed: () => {
+                      userControl.setAvatar(authControl.getUid(), _avatarImages[_currentAvatar]),
+                      Get.off(const HomePage())
+                    },
+                    child: const Text('Continue', style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 20)),
                   ),
                 ),
               ],

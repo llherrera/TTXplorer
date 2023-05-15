@@ -8,7 +8,11 @@ class UserController extends GetxController {
   // ignore: prefer_final_fields
   var _users = <User>[].obs;
 
+  var rewards = <int>[0,0,0].obs;
+  var user = User('user','email@e.com','123456','0').obs;
+
   final databaseRef = FirebaseDatabase.instance.ref();
+  //LocalController localControl = Get.find();
 
   late StreamSubscription<DatabaseEvent> newEntryStreamSubscription;
 
@@ -62,13 +66,24 @@ class UserController extends GetxController {
                 'password': password,
                 'uid': uid});
     } catch (error) {
-      // ignore: avoid_print
-      print(error);
       return Future.error(error);
     }
   }
 
-  Future<void> setPhoto(url, user) async {
+  Future<User> getUser() async {
+    AuthenticationController authenticationController = Get.find();
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(authenticationController.getUid());
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        user.value = User.fromJson(value.snapshot, values);
+      });
+    });
+    return user.value;
+  }
+
+  Future<void> setPhoto(url, user, localDest) async {
     final ref = databaseRef.child('userList');
     Query query = ref.orderByChild('uid').equalTo(user);
     await query.once().then((value) {
@@ -84,9 +99,146 @@ class UserController extends GetxController {
           ref.child(key).update({
             'photosLocales': [url]
           });
+          
+        }
+        try {
+          List<int> rewards = List.from(values['rewards']);
+          rewards[localDest.type == 'fruta' ? 0 : localDest.type == 'semilla' ? 1 : 2] += 1;
+          ref.child(key).update({
+            'rewards': rewards
+          });
+        } catch (e) {
+          ref.child(key).update({
+            'rewards': [
+              localDest.type == 'fruta' ? 1 : 0,
+              localDest.type == 'semilla' ? 1 : 0,
+              localDest.type == 'insecto' ? 1 : 0
+            ]
+          });
         }
       });
     });
+  }
+
+  Future<void> getRewards(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    List<int> rewards = [];
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        rewards = List.from(values['rewards']);
+      });
+    });
+    this.rewards.value = rewards;
+  }
+
+  Future<void> updatePhoto(url, user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'photoProfile': url
+        });
+      });
+    });
+  }
+
+  Future<String> getPhoto(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    String url = '';
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        url = values['photoProfile'];
+      });
+    });
+    return url;
+  }
+
+  Future<List<String>> getPhotos(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    List<String> url = [];
+    try {
+      await query.once().then((value) {
+        final values = value.snapshot.value as Map<dynamic, dynamic>;
+        values.forEach((key, values) {
+          url = List.from(values['photosLocales']);
+        });
+      });
+      return url;
+    } catch (e) {
+      return url;
+    }    
+  }
+
+  Future<void> updateName(name, user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'name': name
+        });
+      });
+    });
+  }
+
+  Future<void> updatePassword(password, user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'password': password
+        });
+      });
+    });
+  }
+
+  Future<String> getPassword(user) {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    String password = '';
+    query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        password = values['password'];
+      });
+    });
+    return Future.value(password);
+  }
+
+  Future<void> setAvatar(user, uriAvatar) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        ref.child(key).update({
+          'avatar': uriAvatar
+        });
+      });
+    });
+  }
+
+  Future<String> getAvatar(user) async {
+    final ref = databaseRef.child('userList');
+    Query query = ref.orderByChild('uid').equalTo(user);
+    String avatar = '';
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        avatar = values['avatar'];
+      });
+    });
+    return avatar;
   }
 
 }

@@ -120,7 +120,7 @@ class _ConociendoteState extends State<Conociendote> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF38005F)),
-                        onPressed: () {Get.off(const AvatarChoicePage());},
+                        onPressed: () {Get.to(const AvatarChoicePage());},
                         child: const Text('Avatar',
                           style: TextStyle(color: Colors.white),
                         ),

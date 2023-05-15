@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ttxplorer/ui/controllers/local_controller.dart';
 
-class FeedPage extends StatelessWidget {
+import '../../Data/model/local.dart';
+import 'local_page.dart';
+
+class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
 
-  Future<List<String>> _searchImages(String term) async {
+  @override
+  State<FeedPage> createState() => _FeedPageState();
+}
+
+
+class _FeedPageState extends State<FeedPage> {
+  LocalController localControl = Get.find();
+  List<LocalB> lista = [];  
+
+  Future<List<LocalB>> _searchImages(String term) async {
     await Future.delayed(const Duration(seconds: 1));
-    return List.generate(
-        20, (index) => 'https://source.unsplash.com/random/800x800/?$term');
+    List<LocalB> list = await localControl.getLocales();
+    lista = list;
+    return list;
   }
 
   @override
@@ -51,7 +66,7 @@ class FeedPage extends StatelessWidget {
 
   Widget photos() {
     return FutureBuilder(
-      future: _searchImages('food'),
+      future: _searchImages(''),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -60,21 +75,24 @@ class FeedPage extends StatelessWidget {
           return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                /*onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PlaceDescription()),
-                  );
-                },*/
-                child: Image.network(
-                  snapshot.data![index],
-                  fit: BoxFit.cover,
+                onTap: () => Get.to(LocalPage(local: lista.elementAt(index),)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFB27CD1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.all(5),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Image.network(
+                      snapshot.data![index].localImageURL,
+                      fit: BoxFit.cover,
+                    ),
+                  )
                 ),
               );
             },

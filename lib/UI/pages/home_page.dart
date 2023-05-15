@@ -119,7 +119,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     getLocales();
-
+    userControl.getUser();
     positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
         (Position? position) {
           if (position != null) {
@@ -142,6 +142,7 @@ class _HomeState extends State<Home> {
 
   bool quest = false;
   final picker = ImagePicker();
+  // ignore: unused_field
   XFile? _image;
   // ignore: unused_field
   String _search = '';
@@ -202,6 +203,7 @@ class _HomeState extends State<Home> {
 
   void _getCurrentLocation() async {
     final position = await _determinatePosition();
+    userControl.getRewards(authControl.getUid());
     setState(() {
       _currentPosition = position;
     });
@@ -261,9 +263,6 @@ class _HomeState extends State<Home> {
   }
 
   double checkProximityMission() {
-//    if (localControl.localDest.value.localName == 'localName') return 51.0;
-//    localDest = voidLocales.elementAt(0);
-
     double destLat1 = localControl.localDest.value.ubi.latitude;
     double destLng1 = localControl.localDest.value.ubi.longitude;
     double destLat2 = _currentPosition.latitude;
@@ -281,11 +280,14 @@ class _HomeState extends State<Home> {
         _image = pickedFile;
       }
     });
-    String urlPhoto = await uploadImageF(File(pickedFile!.path), 'fotos');
-    await localControl.setPhoto(urlPhoto);
-    await userControl.setPhoto(urlPhoto, authControl.getUid());
-    localControl.resetLocalDest();
-    setLocales([]);
+    if (pickedFile != null) {
+      String urlPhoto = await uploadImageF(File(pickedFile.path), 'fotos');
+      await localControl.setPhoto(urlPhoto);
+      await userControl.setPhoto(urlPhoto, authControl.getUid(), localControl.localDest.value);
+      localControl.resetLocalDest();
+      setLocales([]);
+      userControl.getRewards(authControl.getUid());
+    }
   }
 
   @override

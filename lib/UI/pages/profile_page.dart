@@ -28,6 +28,12 @@ class _ProfileState extends State<Profile> {
   File? _image;
   final picker = ImagePicker();
 
+  @override
+  void initState() {
+    super.initState();
+    _username = userControl.user.value.name;
+  }
+
   void getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -37,18 +43,18 @@ class _ProfileState extends State<Profile> {
       }
     });
     //await uploadImageF(File(pickedFile!.path), 'usuario');
-    await uploadImageF(File(pickedFile!.path), 'usuario');
+    String urlPhoto = await uploadImageF(File(pickedFile!.path), 'usuario');
+    await userControl.updatePhoto(urlPhoto, authControl.getUid());
   }
 
-  Future<List<String>> _searchImages(String term) async {
+  Future<List<String>> _searchImages() async {
+    userControl.getRewards(authControl.getUid());
     await Future.delayed(const Duration(seconds: 1));
-    return List.generate(
-        19, (index) => 'https://source.unsplash.com/random/800x800/?$term');
+    return userControl.getPhotos(authControl.getUid());
   }
 
   @override
   Widget build(BuildContext context) {
-    _username = authControl.userEmail();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF38005F),
@@ -64,6 +70,7 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: <Widget>[
                   Container(
+                    padding: const EdgeInsets.only(bottom: 10),
                     decoration: const BoxDecoration(
                       color: Color(0xFF38005F),
                       borderRadius: BorderRadius.only(
@@ -74,7 +81,56 @@ class _ProfileState extends State<Profile> {
                     width: double.infinity,
                     child: photoLoad(),
                   ),
-                  const SizedBox(height: 20),
+                  Stack(
+                    children: [
+                      Positioned(
+                        top: 5,
+                        left: MediaQuery.of(context).size.width * 0.31,
+                        child: const CircleAvatar( backgroundColor: Color(0xFFB27CD1),)
+                      ),
+                      Positioned(
+                        top: 5,
+                        left: MediaQuery.of(context).size.width * 0.44,
+                        child: const CircleAvatar( backgroundColor: Color(0xFFB27CD1),)
+                      ),
+                      Positioned(
+                        top: 5,
+                        left: MediaQuery.of(context).size.width * 0.58,
+                        child: const CircleAvatar( backgroundColor: Color(0xFFB27CD1),)
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: (Image.asset('assets/icons/cereza_icon.png', color: Colors.black))),
+                              IconButton(
+                                onPressed: () {},
+                                icon: (Image.asset('assets/icons/semillas_icon.png', color: Colors.black))),
+                              IconButton(
+                                onPressed: () {},
+                                icon: (Image.asset('assets/icons/arana_icon.png', color: Colors.black)))
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // ignore: invalid_use_of_protected_member
+                              Text('${userControl.rewards.value.elementAt(0)}', style: const TextStyle(fontSize: 20)),
+                              const SizedBox(width: 40),
+                              // ignore: invalid_use_of_protected_member
+                              Text('${userControl.rewards.value.elementAt(1)}', style: const TextStyle(fontSize: 20)),
+                              const SizedBox(width: 40),
+                              // ignore: invalid_use_of_protected_member
+                              Text('${userControl.rewards.value.elementAt(2)}', style: const TextStyle(fontSize: 20)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                   photos(),
                 ],
               ),
@@ -161,7 +217,7 @@ class _ProfileState extends State<Profile> {
                     children: const [
                       Expanded(
                         child: Text(
-                          'Inventario',
+                          'Editar Avatar',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -175,7 +231,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
                   onTap: () {
-                    Get.to(const InventoryPage());
+                    Get.to(const StorePage());
                   },
                 ),
                 ListTile(
@@ -185,7 +241,7 @@ class _ProfileState extends State<Profile> {
                     children: const [
                       Expanded(
                         child: Text(
-                          'Tienda',
+                          'Editar Perfil',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -199,7 +255,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
                   onTap: () {
-                    Get.to(const StorePage());
+                    Get.to(const InventoryPage());
                   },
                 ),
                 const SizedBox(height: 150,),
@@ -248,14 +304,7 @@ class _ProfileState extends State<Profile> {
             icon: _image == null ? 
                             const Icon(Icons.photo_camera, size: 70) :
                             ClipOval(child: Image.file(_image!, width: 130, height: 130, fit: BoxFit.cover,)),
-            onPressed: () async {
-              final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-              if (pickedFile != null) {
-                setState(() {
-                  _image = File(pickedFile.path);
-                });
-              }
-            },
+            onPressed: getImage
           ),
         ),
         const SizedBox(
@@ -263,29 +312,18 @@ class _ProfileState extends State<Profile> {
         ),
         Container(
           decoration: const BoxDecoration(
-            color: Colors.grey,
+            color: Colors.transparent,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(_username.toString(), style: const TextStyle(fontSize: 20, color: Colors.black)),
+          child: Text(_username.toString(), style: const TextStyle(fontSize: 20, color: Colors.white)),
         ),
-        SizedBox(
-          width: 200,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.food_bank, size: 40,)),
-            ],
-          )
-        )
       ]
     );
   }
 
   Widget photos() {
     return FutureBuilder(
-      future: _searchImages('food'),
+      future: _searchImages(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -297,9 +335,19 @@ class _ProfileState extends State<Profile> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
-              return Image.network(
-                snapshot.data![index],
-                fit: BoxFit.cover,
+              return Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF38005F),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: const EdgeInsets.all(5),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: Image.network(
+                    snapshot.data![snapshot.data!.length - 1 - index],
+                    fit: BoxFit.cover,
+                  ),
+                ),
               );
             },
           );

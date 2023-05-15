@@ -13,6 +13,9 @@ class AuthenticationController extends GetxController {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       
+      UserController userController = Get.find();
+      userController.user.value = await userController.getUser();
+
       return Future.value();
     } on FirebaseAuthException catch (e) {
       String error = '';
@@ -75,6 +78,34 @@ class AuthenticationController extends GetxController {
         AlertDialog(
           title: const Text('Error'),
           content: const Text('Error al cerrar sesion'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {Get.back();},
+              child: const Text('OK'),
+            )
+          ],
+        )
+      );
+    }
+  }
+
+  Future<void> changePassword(newPassword, currentPass) async {
+    try {
+      var user = FirebaseAuth.instance.currentUser!;
+      final cred = EmailAuthProvider.credential(email: user.email!, password: currentPass);
+      await user.reauthenticateWithCredential(cred).then((value) async {
+        await user.updatePassword(newPassword).then((_) {
+          UserController userController = Get.find();
+          userController.updatePassword(newPassword, getUid());
+        });
+      });
+      return Future.value();
+    // ignore: unused_catch_clause
+    } on FirebaseAuthException catch (e) {
+      return Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Error al actualizar la contraseña'),
           actions: <Widget>[
             TextButton(
               onPressed: () {Get.back();},
