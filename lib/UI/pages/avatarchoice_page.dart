@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ttxplorer/ui/pages/home_page.dart';
-
 import '../controllers/auth_controller.dart';
 import '../controllers/user_controller.dart';
 
