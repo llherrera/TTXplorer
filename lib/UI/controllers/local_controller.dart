@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../Data/model/local.dart';
+import '../pages/local_page.dart';
 import 'auth_controller.dart';
 
 class LocalController extends GetxController {
@@ -11,7 +13,7 @@ class LocalController extends GetxController {
 
   // ignore: prefer_const_constructors
   var localDest = LocalB('localName', 'localDescription', 'localImage', 'type', LatLng(0, 0), 'uid').obs;
-  RxList markerLocales = [].obs;
+  var markerLocales = <Marker>{}.obs;
 
   final databaseRef = FirebaseDatabase.instance.ref();
 
@@ -122,6 +124,7 @@ class LocalController extends GetxController {
   void setLocalDest(LocalB dest) {
     localDest.value = dest;
   }
+  
   void resetLocalDest() {
     // ignore: prefer_const_constructors
     localDest.value = LocalB('localName', 'localDescription', 'localImage', 'type', LatLng(0, 0), 'uid');
@@ -150,4 +153,58 @@ class LocalController extends GetxController {
       });
     });
   } 
+
+  Future<void> setReview(review) async {
+    final ref = databaseRef.child('localList');
+    Query query = ref.orderByChild('localName').equalTo(localDest.value.localName);
+    await query.once().then((value) {
+      final values = value.snapshot.value as Map<dynamic, dynamic>;
+      values.forEach((key, values) {
+        final json = values as Map<dynamic, dynamic>;
+        if(json["localName"] == localDest.value.localName){
+          try{
+            List<String> reviews = List<String>.from(json['reviews']);
+            reviews.add(review);
+            ref.child(key).update({
+              'reviews': reviews
+            });
+          } catch (e) {
+            ref.child(key).update({
+              'reviews': [review]
+            });
+          }
+        }
+      });
+    });
+  }
+
+  Future<void> setLocales(Iterable<LocalB> voidLocales) async {
+    _locales.value = voidLocales as List<LocalB>;
+    
+    if (voidLocales.isEmpty) {
+      _locales.value = await getLocales();
+    }
+
+    // ignore: invalid_use_of_protected_member
+    for (var locall in _locales.value) {
+      // ignore: invalid_use_of_protected_member
+      markerLocales.value.add(
+        Marker(
+          markerId: MarkerId(locall.localName),
+          position: locall.ubi,
+          infoWindow: InfoWindow(
+            title: locall.localName,
+            snippet: locall.localDescription,
+          ),
+          onTap: () {
+            Get.to(LocalPage(local: locall));
+          },
+          icon: locall.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/cereza_icon.png') : 
+               (locall.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/semillas_icon.png') : 
+               await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/arana_icon.png'))
+        ),
+      );
+    }
+    //markerLocales.value = markerLocales;
+  }
 }

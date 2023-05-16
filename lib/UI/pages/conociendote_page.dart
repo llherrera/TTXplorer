@@ -41,7 +41,7 @@ class _ConociendoteState extends State<Conociendote> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(child: Scaffold(
       backgroundColor: const Color(0xFFD2D2D2),
       body: SingleChildScrollView(
         child: Padding(
@@ -142,6 +142,6 @@ class _ConociendoteState extends State<Conociendote> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

@@ -75,7 +75,7 @@ class _StorePageState extends State<StorePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('CHOOSE YOUR AVATAR', style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 28)),
+        const Text('ESCOGE A TU AVATAR', style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 28)),
         const SizedBox(height: 20),
         CarouselSlider.builder(
           itemCount: _avatarImages.length,
@@ -118,7 +118,7 @@ class _StorePageState extends State<StorePage> {
             userControl.getUser();
             Get.offAll(() => const HomePage());
           },
-          child: const Text('CONFIRM'),
+          child: const Text('CONFIRMAR'),
         ),
       ],
     );
@@ -152,7 +152,7 @@ class _StorePageState extends State<StorePage> {
   Widget editAvatar() {
     return Column(
       children: [
-        const Text('EDIT YOUR AVATAR', style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 28)),
+        const Text('EDITA TU AVATAR', style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 28)),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -178,7 +178,7 @@ class _StorePageState extends State<StorePage> {
             userControl.getUser();
             Get.offAll(() => const HomePage());
           },
-          child: const Text('CONFIRM'),
+          child: const Text('CONFIRMAR'),
         ),
       ],
     );

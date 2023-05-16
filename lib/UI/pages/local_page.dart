@@ -98,7 +98,7 @@ class _LocalPageState extends State<LocalPage> {
                   children: const [
                     SizedBox(height: 16),
                     Text(
-                      'Reseña',
+                      'Reseñas',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -132,13 +132,15 @@ class _LocalPageState extends State<LocalPage> {
                         'Iniciar misión',
                         style: const TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (localControl.localDest.value == widget.local) {
                           localControl.resetLocalDest();
-                          widget.callback!([]);
+                          //await localControl.setLocales([]);
+                          await widget.callback!([]);
                         } else {
                           localControl.setLocalDest(widget.local);
-                          widget.callback!([widget.local]);
+                          //await localControl.setLocales([widget.local]);
+                          await widget.callback!([widget.local]);
                         }
                         Get.back();
                       },

@@ -79,7 +79,7 @@ class _FeedPageState extends State<FeedPage> {
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                onTap: () => Get.to(LocalPage(local: lista.elementAt(index),)),
+                onTap: () async => Get.to(LocalPage(local: lista.elementAt(index))),
                 child: Container(
                   decoration: BoxDecoration(
                     color: const Color(0xFFB27CD1),

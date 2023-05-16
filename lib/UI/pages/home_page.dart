@@ -154,6 +154,8 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> getLocales() async {
+    //await localControl.setLocales(await localControl.getLocales(), setMarker);
+    //setMarker();
     locales = await localControl.getLocales();
     setState(() {
       voidLocales = locales;
@@ -176,7 +178,7 @@ class _HomeState extends State<Home> {
             snippet: locall.localDescription,
           ),
           onTap: () {
-            Get.to(LocalPage(local: locall, callback: setLocales,));
+            Get.to(LocalPage(local: locall, callback: setLocales));
           },
           icon: locall.type == 'fruta' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/cereza_icon.png') : 
                (locall.type == 'semilla' ? await BitmapDescriptor.fromAssetImage(const ImageConfiguration(),'assets/icons/semillas_icon.png') : 
@@ -186,6 +188,19 @@ class _HomeState extends State<Home> {
     }
     setState(() {
       markerLocales = markerLocales;
+    });
+  }
+
+  void setMarker(){
+    Set<Marker> markers = {};
+    // ignore: invalid_use_of_protected_member
+    for (var element in localControl.markerLocales.value) {
+      markers.add(element);
+    }
+    setState(() {
+      // ignore: invalid_use_of_protected_member
+      localControl.markerLocales.value = markers;
+      markerLocales = markers;
     });
   }
 
@@ -258,6 +273,7 @@ class _HomeState extends State<Home> {
       ),
       zoomControlsEnabled: false,
       mapType: MapType.normal,
+      // ignore: invalid_use_of_protected_member
       markers: markerLocales,
     );
   }

@@ -32,6 +32,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     _username = userControl.user.value.name;
+    setImageProfile();
   }
 
   void getImage() async {
@@ -45,6 +46,16 @@ class _ProfileState extends State<Profile> {
     //await uploadImageF(File(pickedFile!.path), 'usuario');
     String urlPhoto = await uploadImageF(File(pickedFile!.path), 'usuario');
     await userControl.updatePhoto(urlPhoto, authControl.getUid());
+  }
+
+  Future<void> setImageProfile() async {
+    try{
+      String urlPhoto = await userControl.getPhoto(authControl.getUid());
+      setState(() {
+        _image = File.fromUri(Uri.parse(urlPhoto));
+      });
+    // ignore: empty_catches
+    } catch (e) { }
   }
 
   Future<List<String>> _searchImages() async {

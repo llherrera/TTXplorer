@@ -16,15 +16,16 @@ class _ProfileFormState extends State<ProfileForm> {
   AuthenticationController authControl = Get.find();
   UserController userControl = Get.find();
   String _username = '';
-  String _password = '';
+  String _passwordold = '';
+  String _passwordnew = '';
 
-  Future<void> update(opt, para) async {
+  Future<void> update(opt, para, old) async {
     if (opt) {
       await userControl.updateName(para, authControl.getUid());
 
     } else {
-      String currentPass = await userControl.getPassword(authControl.getUid());
-      await authControl.changePassword(para, currentPass);
+      //String currentPass = await userControl.getPassword(authControl.getUid());
+      await authControl.changePassword(para, old);
       //await userControl.updatePassword(para, authControl.getUid());
     }
     //await authControl.signup(_username, _email, _password);
@@ -56,17 +57,26 @@ class _ProfileFormState extends State<ProfileForm> {
               TextFormField(
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: 'Contraseña',
+                  labelText: 'Contraseña actual',
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (value) => _password = value,
+                onChanged: (value) => _passwordold = value,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Contraseña nueva',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) => _passwordnew = value,
               ),
               const SizedBox(height: 16),
               SizedBox(
                 width: 180,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (_username.isEmpty && _password.isEmpty) {
+                    if (_username.isEmpty && _passwordold.isEmpty && _passwordnew.isEmpty) {
                       Get.dialog(
                         AlertDialog(
                           title: const Text('Error'),
@@ -82,7 +92,7 @@ class _ProfileFormState extends State<ProfileForm> {
                     } else {
                       if (_username.isNotEmpty) {
                         try {
-                          await update(true, _username);
+                          await update(true, _username, '');
                           userControl.user.value = await userControl.getUser();
                           Get.off(const HomePage());
                         } catch (e) {
@@ -100,9 +110,9 @@ class _ProfileFormState extends State<ProfileForm> {
                           );
                         }
                       }
-                      if (_password.isNotEmpty) {
+                      if (_passwordold.isNotEmpty && _passwordnew.isNotEmpty) {
                         try {
-                          await update(false, _password);
+                          await update(false, _passwordnew, _passwordold);
                           userControl.user.value = await userControl.getUser();
                           Get.off(const HomePage());
                         } catch (e) {
