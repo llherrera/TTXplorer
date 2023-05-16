@@ -124,6 +124,8 @@ class UserController extends GetxController {
     final ref = databaseRef.child('userList');
     Query query = ref.orderByChild('uid').equalTo(user);
     List<int> rewards = [];
+    try {
+
     await query.once().then((value) {
       final values = value.snapshot.value as Map<dynamic, dynamic>;
       values.forEach((key, values) {
@@ -131,6 +133,10 @@ class UserController extends GetxController {
       });
     });
     this.rewards.value = rewards;
+    } catch(e) {
+      this.rewards.value = [0,0,0];
+      
+    }
   }
 
   Future<void> updatePhoto(url, user) async {
